@@ -158,6 +158,18 @@ cargo run -p apxinf-model --features cuda --release --example qwen38_bench -- \
 ```
 
 
+### Qwen-Drive
+
+Direct planning, BF16, batch 1, 10 flow steps and 12 input frames. Latency covers
+the end-to-end request from resident decoded images to the host trajectory.
+
+| Hardware | Precision | Latency | Throughput | PDM |
+|---|---|---:|---:|---:|
+| Jetson AGX Thor SM110 | BF16 | 482.60 ms | 2.07 Hz | 85.6786 |
+
+[Test setup, reproduction steps and accuracy results](doc/qwen-drive-benchmark.md).
+
+
 ## Port a new model with an agent
 
 `skills/model-port-workflow` drives the whole sequence.
