@@ -238,7 +238,17 @@ fn main() {
     .to_vec();
     generic_sources.push(native.join("kernels/custom/mlp_ops.cu"));
     generic_sources.push(native.join("kernels/custom/gdn_ops.cu"));
-    generic_sources.push(native.join("kernels/flashinfer_gdn/flashinfer_gdn_tma.cpp"));
+    // flashinfer_gdn_tma.cpp is SM100-family only (pairs with launch.cu / tcgen05).
+    // Non-SM100 targets get a stub so linear_attention adapters still link.
+    let has_sm100_cutlass = selection
+        .targets
+        .iter()
+        .any(|target| is_cutlass_sm100_family(&target.cutlass_arch));
+    if has_sm100_cutlass {
+        generic_sources.push(native.join("kernels/flashinfer_gdn/flashinfer_gdn_tma.cpp"));
+    } else {
+        generic_sources.push(native.join("kernels/flashinfer_gdn/flashinfer_gdn_stub.cpp"));
+    }
     generic_sources.push(native.join("kernels/custom/attn_ops.cu"));
     generic_sources.push(native.join("kernels/custom/model_ops.cu"));
     generic_sources.push(native.join("tests/framework_backend.cu"));
@@ -247,11 +257,7 @@ fn main() {
     let fa2_compat_root = native.join("kernels/fa2_compat");
     let attention_kernel_root = native.join("kernels/attention");
     let mut cutlass_sources = Vec::new();
-    if selection
-        .targets
-        .iter()
-        .any(|target| is_cutlass_sm100_family(&target.cutlass_arch))
-    {
+    if has_sm100_cutlass {
         let operators = cutlass_root.join("ops/gemm");
         cutlass_sources.extend(
             [

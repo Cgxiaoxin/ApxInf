@@ -64,9 +64,12 @@ pub const DEVICE_FEATURE_CUTLASS_SM100: u64 = 1 << 1;
 pub const DEVICE_FEATURE_FA2: u64 = 1 << 2;
 
 pub fn is_cutlass_sm100_family(arch: &str) -> bool {
+    // Datacenter / Jetson Blackwell with tcgen05/UMMA (SM100-family).
+    // Consumer GeForce Blackwell (sm_120/121) is NOT in this family: it lacks
+    // tcgen05 and must use FA2/cuBLAS paths instead of CUTLASS SM100 kernels.
     matches!(
         arch,
-        "sm_100" | "sm_100a" | "sm_101" | "sm_101a" | "sm_110" | "sm_110a" | "sm_120" | "sm_120a"
+        "sm_100" | "sm_100a" | "sm_101" | "sm_101a" | "sm_110" | "sm_110a"
     )
 }
 

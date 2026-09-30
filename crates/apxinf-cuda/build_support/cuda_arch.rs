@@ -64,11 +64,12 @@ pub struct ArchSelection {
 }
 
 pub fn is_cutlass_sm100_family(arch: &str) -> bool {
+    // Datacenter / Jetson Blackwell with tcgen05/UMMA (SM100-family).
+    // Consumer GeForce Blackwell (sm_120/121) is NOT in this family: it lacks
+    // tcgen05 and must use FA2/cuBLAS paths instead of CUTLASS SM100 kernels.
     matches!(
         arch,
-        "sm_100" | "sm_100a" | "sm_101" | "sm_101a"
-        | "sm_110" | "sm_110a"
-        | "sm_120" | "sm_120a" | "sm_121" | "sm_121a"
+        "sm_100" | "sm_100a" | "sm_101" | "sm_101a" | "sm_110" | "sm_110a"
     )
 }
 
