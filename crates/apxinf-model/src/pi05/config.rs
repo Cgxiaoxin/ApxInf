@@ -207,7 +207,10 @@ impl Pi05Config {
             )));
         }
         const ALIGNMENT: u128 = 256;
-        const SAFETY_MARGIN: u128 = 1024 * 1024;
+        // Extra headroom covers consumer-Blackwell FP8 paths that occasionally
+        // allocate a few KiB beyond the static accounting (e.g. K-unaligned
+        // vision patch embed emulation intermediates during capture).
+        const SAFETY_MARGIN: u128 = 1024 * 1024 + 64 * 1024;
         let mut total = 0u128;
         let mut allocate = |bytes: usize| {
             total = (total + ALIGNMENT - 1) & !(ALIGNMENT - 1);
@@ -653,27 +656,14 @@ impl ModelVariantChoice {
     }
     pub fn resolve(self, sm: u32, has_fp8_scales: bool) -> Self {
         match self {
-            // Datacenter / Jetson Blackwell (Thor) only. Consumer GeForce
-            // sm_120/sm_121 advertise FP8 Tensor Cores, but the PI0.5 cuBLASLt
-            // FP8 GEMM path currently returns CUBLAS_STATUS_NOT_SUPPORTED there.
+            // Datacenter / Jetson Blackwell (Thor). Consumer GeForce sm_120/121
+            // can run Ada-style cuBLASLt FP8 for K-aligned shapes, but keep auto
+            // on BF16 until that path is production-validated end-to-end.
             Self::Auto if matches!(sm, 100 | 101 | 110) && has_fp8_scales => Self::Fp8Static,
             Self::Auto if (80..100).contains(&sm) => Self::Int8Dynamic,
             Self::Auto => Self::Bf16,
             explicit => explicit,
         }
-    }
-
-    /// Explicit `fp8_static` is rejected on architectures whose FP8 GEMM path
-    /// is known not to run (fail closed at load, not at first infer).
-    pub fn ensure_supported_on(self, sm: u32) -> apxinf_core::Result<()> {
-        if self == Self::Fp8Static && matches!(sm, 120 | 121) {
-            return Err(apxinf_core::Error::Other(format!(
-                "PI0.5 model_variant=fp8_static is not supported on consumer \
-                 Blackwell SM{sm} (cuBLASLt FP8 GEMM returns NOT_SUPPORTED); \
-                 use model_variant=bf16"
-            )));
-        }
-        Ok(())
     }
 }
 impl std::str::FromStr for ModelVariantChoice {
@@ -723,8 +713,5 @@ mod model_variant_tests {
             ModelVariantChoice::Bf16.resolve(110, true),
             ModelVariantChoice::Bf16
         );
-        assert!(ModelVariantChoice::Fp8Static.ensure_supported_on(120).is_err());
-        assert!(ModelVariantChoice::Fp8Static.ensure_supported_on(110).is_ok());
-        assert!(ModelVariantChoice::Bf16.ensure_supported_on(120).is_ok());
     }
 }

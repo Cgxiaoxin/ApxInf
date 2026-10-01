@@ -344,7 +344,17 @@ pub fn gemm_fp8(
     let output = crate::workspace::output_buffer(ctx, m * n * DType::F16.size_in_bytes())?;
     let activation_buffer = CudaBuffer::from_tensor(activation).map_err(Error::Cuda)?;
     let weight_buffer = CudaBuffer::from_tensor(weight.values_e4m3).map_err(Error::Cuda)?;
-    if crate::workspace::fp8_emulation_required(ctx)? {
+    // Consumer Blackwell (sm_120/121) cuBLASLt FP8 heuristics require K%16==0.
+    // PI0.5 vision patch embed uses K=588 (14*14*3); fall back to F16 emulation
+    // for that shape while keeping Ada-style native FP8 for aligned GEMMs.
+    let force_emulation = matches!(ctx.caps().sm, 120 | 121) && (k % 16 != 0);
+    if force_emulation || crate::workspace::fp8_emulation_required(ctx)? {
+        if force_emulation {
+            eprintln!(
+                "[apxinf] FP8 GEMM m={m} n={n} k={k} on SM{} uses F16 emulation (cuBLASLt needs K%16==0)",
+                ctx.caps().sm
+            );
+        }
         let activation_bytes = m
             .checked_mul(k)
             .and_then(|elements| elements.checked_mul(DType::F16.size_in_bytes()))

@@ -753,6 +753,456 @@
         "id": 0,
         "implementation_version": 1
       }
+    },
+    {
+      "key": {
+        "activation_dtype": "f8e4m3",
+        "device": {
+          "multiprocessor_count": 170,
+          "sm": 120
+        },
+        "epilogue": "none",
+        "k": 1024,
+        "layout": "row_major",
+        "m": 1,
+        "n": 1024,
+        "op": "fp8_f16",
+        "output_dtype": "f16",
+        "scale_mode": "per_tensor",
+        "weight_dtype": "f8e4m3",
+        "workspace_limit": 18446744073709551615
+      },
+      "milliseconds": 0.026353919953107832,
+      "tactic": {
+        "backend": "cublaslt",
+        "id": 1,
+        "implementation_version": 1
+      }
+    },
+    {
+      "key": {
+        "activation_dtype": "f8e4m3",
+        "device": {
+          "multiprocessor_count": 170,
+          "sm": 120
+        },
+        "epilogue": "none",
+        "k": 1024,
+        "layout": "row_major",
+        "m": 1,
+        "n": 3072,
+        "op": "fp8_f16",
+        "output_dtype": "f16",
+        "scale_mode": "per_tensor",
+        "weight_dtype": "f8e4m3",
+        "workspace_limit": 18446744073709551615
+      },
+      "milliseconds": 0.11360895931720734,
+      "tactic": {
+        "backend": "vendor",
+        "id": 0,
+        "implementation_version": 1
+      }
+    },
+    {
+      "key": {
+        "activation_dtype": "f8e4m3",
+        "device": {
+          "multiprocessor_count": 170,
+          "sm": 120
+        },
+        "epilogue": "none",
+        "k": 1024,
+        "layout": "row_major",
+        "m": 15,
+        "n": 32,
+        "op": "fp8_f16",
+        "output_dtype": "f16",
+        "scale_mode": "per_tensor",
+        "weight_dtype": "f8e4m3",
+        "workspace_limit": 18446744073709551615
+      },
+      "milliseconds": 0.018501119911670683,
+      "tactic": {
+        "backend": "cublaslt",
+        "id": 3,
+        "implementation_version": 1
+      }
+    },
+    {
+      "key": {
+        "activation_dtype": "f8e4m3",
+        "device": {
+          "multiprocessor_count": 170,
+          "sm": 120
+        },
+        "epilogue": "none",
+        "k": 32,
+        "layout": "row_major",
+        "m": 15,
+        "n": 1024,
+        "op": "fp8_f16",
+        "output_dtype": "f16",
+        "scale_mode": "per_tensor",
+        "weight_dtype": "f8e4m3",
+        "workspace_limit": 18446744073709551615
+      },
+      "milliseconds": 0.016975359916687013,
+      "tactic": {
+        "backend": "cublaslt",
+        "id": 1,
+        "implementation_version": 1
+      }
+    },
+    {
+      "key": {
+        "activation_dtype": "f8e4m3",
+        "device": {
+          "multiprocessor_count": 170,
+          "sm": 120
+        },
+        "epilogue": "none",
+        "k": 2048,
+        "layout": "row_major",
+        "m": 15,
+        "n": 1024,
+        "op": "fp8_f16",
+        "output_dtype": "f16",
+        "scale_mode": "per_tensor",
+        "weight_dtype": "f8e4m3",
+        "workspace_limit": 18446744073709551615
+      },
+      "milliseconds": 0.10427135974168776,
+      "tactic": {
+        "backend": "cublaslt",
+        "id": 3,
+        "implementation_version": 1
+      }
+    },
+    {
+      "key": {
+        "activation_dtype": "f8e4m3",
+        "device": {
+          "multiprocessor_count": 170,
+          "sm": 120
+        },
+        "epilogue": "none",
+        "k": 4096,
+        "layout": "row_major",
+        "m": 15,
+        "n": 1024,
+        "op": "fp8_f16",
+        "output_dtype": "f16",
+        "scale_mode": "per_tensor",
+        "weight_dtype": "f8e4m3",
+        "workspace_limit": 18446744073709551615
+      },
+      "milliseconds": 0.12437760204076768,
+      "tactic": {
+        "backend": "cublaslt",
+        "id": 6,
+        "implementation_version": 1
+      }
+    },
+    {
+      "key": {
+        "activation_dtype": "f8e4m3",
+        "device": {
+          "multiprocessor_count": 170,
+          "sm": 120
+        },
+        "epilogue": "none",
+        "k": 1024,
+        "layout": "row_major",
+        "m": 15,
+        "n": 2560,
+        "op": "fp8_f16",
+        "output_dtype": "f16",
+        "scale_mode": "per_tensor",
+        "weight_dtype": "f8e4m3",
+        "workspace_limit": 18446744073709551615
+      },
+      "milliseconds": 0.11028352051973345,
+      "tactic": {
+        "backend": "cublaslt",
+        "id": 0,
+        "implementation_version": 1
+      }
+    },
+    {
+      "key": {
+        "activation_dtype": "f8e4m3",
+        "device": {
+          "multiprocessor_count": 170,
+          "sm": 120
+        },
+        "epilogue": "none",
+        "k": 1024,
+        "layout": "row_major",
+        "m": 15,
+        "n": 8192,
+        "op": "fp8_f16",
+        "output_dtype": "f16",
+        "scale_mode": "per_tensor",
+        "weight_dtype": "f8e4m3",
+        "workspace_limit": 18446744073709551615
+      },
+      "milliseconds": 0.16100992023944857,
+      "tactic": {
+        "backend": "cublaslt",
+        "id": 1,
+        "implementation_version": 1
+      }
+    },
+    {
+      "key": {
+        "activation_dtype": "f8e4m3",
+        "device": {
+          "multiprocessor_count": 170,
+          "sm": 120
+        },
+        "epilogue": "none",
+        "k": 1152,
+        "layout": "row_major",
+        "m": 512,
+        "n": 1152,
+        "op": "fp8_f16",
+        "output_dtype": "f16",
+        "scale_mode": "per_tensor",
+        "weight_dtype": "f8e4m3",
+        "workspace_limit": 18446744073709551615
+      },
+      "milliseconds": 0.1070771199464798,
+      "tactic": {
+        "backend": "cublaslt",
+        "id": 0,
+        "implementation_version": 1
+      }
+    },
+    {
+      "key": {
+        "activation_dtype": "f8e4m3",
+        "device": {
+          "multiprocessor_count": 170,
+          "sm": 120
+        },
+        "epilogue": "none",
+        "k": 4304,
+        "layout": "row_major",
+        "m": 512,
+        "n": 1152,
+        "op": "fp8_f16",
+        "output_dtype": "f16",
+        "scale_mode": "per_tensor",
+        "weight_dtype": "f8e4m3",
+        "workspace_limit": 18446744073709551615
+      },
+      "milliseconds": 0.1598387211561203,
+      "tactic": {
+        "backend": "cublaslt",
+        "id": 2,
+        "implementation_version": 1
+      }
+    },
+    {
+      "key": {
+        "activation_dtype": "f8e4m3",
+        "device": {
+          "multiprocessor_count": 170,
+          "sm": 120
+        },
+        "epilogue": "none",
+        "k": 1152,
+        "layout": "row_major",
+        "m": 512,
+        "n": 2048,
+        "op": "fp8_f16",
+        "output_dtype": "f16",
+        "scale_mode": "per_tensor",
+        "weight_dtype": "f8e4m3",
+        "workspace_limit": 18446744073709551615
+      },
+      "milliseconds": 0.12116735965013505,
+      "tactic": {
+        "backend": "cublaslt",
+        "id": 3,
+        "implementation_version": 1
+      }
+    },
+    {
+      "key": {
+        "activation_dtype": "f8e4m3",
+        "device": {
+          "multiprocessor_count": 170,
+          "sm": 120
+        },
+        "epilogue": "none",
+        "k": 1152,
+        "layout": "row_major",
+        "m": 512,
+        "n": 3456,
+        "op": "fp8_f16",
+        "output_dtype": "f16",
+        "scale_mode": "per_tensor",
+        "weight_dtype": "f8e4m3",
+        "workspace_limit": 18446744073709551615
+      },
+      "milliseconds": 0.14514176070690157,
+      "tactic": {
+        "backend": "cublaslt",
+        "id": 6,
+        "implementation_version": 1
+      }
+    },
+    {
+      "key": {
+        "activation_dtype": "f8e4m3",
+        "device": {
+          "multiprocessor_count": 170,
+          "sm": 120
+        },
+        "epilogue": "none",
+        "k": 1152,
+        "layout": "row_major",
+        "m": 512,
+        "n": 4304,
+        "op": "fp8_f16",
+        "output_dtype": "f16",
+        "scale_mode": "per_tensor",
+        "weight_dtype": "f8e4m3",
+        "workspace_limit": 18446744073709551615
+      },
+      "milliseconds": 0.15529856085777283,
+      "tactic": {
+        "backend": "cublaslt",
+        "id": 4,
+        "implementation_version": 1
+      }
+    },
+    {
+      "key": {
+        "activation_dtype": "f8e4m3",
+        "device": {
+          "multiprocessor_count": 170,
+          "sm": 120
+        },
+        "epilogue": "none",
+        "k": 2048,
+        "layout": "row_major",
+        "m": 556,
+        "n": 2048,
+        "op": "fp8_f16",
+        "output_dtype": "f16",
+        "scale_mode": "per_tensor",
+        "weight_dtype": "f8e4m3",
+        "workspace_limit": 18446744073709551615
+      },
+      "milliseconds": 0.14635392069816588,
+      "tactic": {
+        "backend": "vendor",
+        "id": 0,
+        "implementation_version": 1
+      }
+    },
+    {
+      "key": {
+        "activation_dtype": "f8e4m3",
+        "device": {
+          "multiprocessor_count": 170,
+          "sm": 120
+        },
+        "epilogue": "none",
+        "k": 16384,
+        "layout": "row_major",
+        "m": 556,
+        "n": 2048,
+        "op": "fp8_f16",
+        "output_dtype": "f16",
+        "scale_mode": "per_tensor",
+        "weight_dtype": "f8e4m3",
+        "workspace_limit": 18446744073709551615
+      },
+      "milliseconds": 0.5073433613777161,
+      "tactic": {
+        "backend": "cublaslt",
+        "id": 0,
+        "implementation_version": 1
+      }
+    },
+    {
+      "key": {
+        "activation_dtype": "f8e4m3",
+        "device": {
+          "multiprocessor_count": 170,
+          "sm": 120
+        },
+        "epilogue": "none",
+        "k": 2048,
+        "layout": "row_major",
+        "m": 556,
+        "n": 2560,
+        "op": "fp8_f16",
+        "output_dtype": "f16",
+        "scale_mode": "per_tensor",
+        "weight_dtype": "f8e4m3",
+        "workspace_limit": 18446744073709551615
+      },
+      "milliseconds": 0.1614425617456436,
+      "tactic": {
+        "backend": "cublaslt",
+        "id": 6,
+        "implementation_version": 1
+      }
+    },
+    {
+      "key": {
+        "activation_dtype": "f8e4m3",
+        "device": {
+          "multiprocessor_count": 170,
+          "sm": 120
+        },
+        "epilogue": "none",
+        "k": 2048,
+        "layout": "row_major",
+        "m": 556,
+        "n": 32768,
+        "op": "fp8_f16",
+        "output_dtype": "f16",
+        "scale_mode": "per_tensor",
+        "weight_dtype": "f8e4m3",
+        "workspace_limit": 18446744073709551615
+      },
+      "milliseconds": 0.9716940808296204,
+      "tactic": {
+        "backend": "cublaslt",
+        "id": 2,
+        "implementation_version": 1
+      }
+    },
+    {
+      "key": {
+        "activation_dtype": "f8e4m3",
+        "device": {
+          "multiprocessor_count": 170,
+          "sm": 120
+        },
+        "epilogue": "geglu",
+        "k": 2048,
+        "layout": "row_major",
+        "m": 556,
+        "n": 32768,
+        "op": "fp8_f16",
+        "output_dtype": "f8e4m3",
+        "scale_mode": "per_tensor",
+        "weight_dtype": "f8e4m3",
+        "workspace_limit": 18446744073709551615
+      },
+      "milliseconds": 0.9842278409004211,
+      "tactic": {
+        "backend": "gemm_then_geglu",
+        "id": 0,
+        "implementation_version": 1
+      }
     }
   ],
   "schema": "apxinf.cuda.tuning.v1",

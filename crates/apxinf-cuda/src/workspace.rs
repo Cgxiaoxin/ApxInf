@@ -44,9 +44,13 @@ impl GraphWorkspace {
     ) -> Result<Self> {
         let mut workspace = Self::new(capacity_bytes, device)?;
         let caps = CudaDeviceCaps::query(device).map_err(Error::Cuda)?;
-        let native_fp8 =
-            caps.compute_major > 8 || (caps.compute_major == 8 && caps.compute_minor >= 9);
-        if !native_fp8 {
+        // Ampere and older lack native E4M3 Tensor Cores. Consumer Blackwell
+        // (sm_120/121) has native FP8 for K-aligned shapes, but PI0.5 still
+        // needs F16 emulation scratch for unaligned K (e.g. vision K=588).
+        let needs_emulation_scratch = !(caps.compute_major > 8
+            || (caps.compute_major == 8 && caps.compute_minor >= 9))
+            || matches!(caps.sm, 120 | 121);
+        if needs_emulation_scratch {
             if max_activation_elements == 0 || max_weight_elements == 0 {
                 return Err(Error::Other(
                     "static inference FP8 emulation scratch capacities must be non-zero".into(),
