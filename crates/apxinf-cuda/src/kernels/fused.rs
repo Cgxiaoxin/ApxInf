@@ -930,6 +930,10 @@ pub fn try_fp8_gemm_bias_f16(
         )));
     }
     let (m, k, n) = (a[0], a[1], b[1]);
+    // sm_120/121 cuBLASLt FP8 heuristics need K%16==0; fall back to unfused.
+    if matches!(ctx.caps().sm, 120 | 121) && k % 16 != 0 {
+        return Ok(None);
+    }
     let key = fp8_fused_tuning_key(ctx, m, n, k, TuningDType::F16, Epilogue::Bias);
     let plan = super::gemm::resolve_fused_fp8_plan(
         ctx,
@@ -1037,6 +1041,9 @@ pub fn try_fp8_gemm_bias_gelu_e4m3(
             "static inference fused GELU GEMM shape mismatch: {a:?} @ {b:?}, bias {:?}, output scale {output_scale}",
             bias.shape().dims()
         )));
+    }
+    if matches!(ctx.caps().sm, 120 | 121) && a[1] % 16 != 0 {
+        return Ok(None);
     }
     let (m, k, n) = (a[0], a[1], b[1]);
     let key = fp8_fused_tuning_key(ctx, m, n, k, TuningDType::F8E4M3, Epilogue::BiasGelu);
@@ -1157,6 +1164,9 @@ pub fn try_fp8_gemm_bias_residual_f16(
         )));
     }
     let (m, k, n) = (a[0], a[1], b[1]);
+    if matches!(ctx.caps().sm, 120 | 121) && k % 16 != 0 {
+        return Ok(None);
+    }
     let bias_pointer = match bias {
         Some(value) => gpu_ptr(value)?,
         None => std::ptr::null(),

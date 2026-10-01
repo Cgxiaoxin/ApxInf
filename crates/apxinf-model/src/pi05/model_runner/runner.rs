@@ -428,6 +428,10 @@ impl Pi05ModelRunner {
                 } else {
                     None
                 };
+                // Do not bind an undersized bump arena for PreferGraph-fallback
+                // eager: FP8 fused fallthroughs inflate peak beyond the static
+                // ledger (grow-on-exhaust does not converge without reuse).
+                // Workspace-free eager reallocates and remains correct.
                 ExecStrategy::Eager(EagerInputs {
                     patches,
                     raw_images,

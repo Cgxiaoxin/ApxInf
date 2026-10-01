@@ -6,7 +6,7 @@ use apxinf_core::{DType, Error, Result};
 
 use crate::buffer::CudaBuffer;
 use crate::context::CudaContext;
-use crate::device_caps::CudaDeviceCaps;
+use crate::device_caps::{CudaArchFamily, CudaDeviceCaps};
 
 const WORKSPACE_ALIGNMENT: usize = 256;
 
@@ -15,6 +15,10 @@ pub struct GraphWorkspace {
     storage: CudaBuffer,
     offset: Cell<usize>,
     fp8_emulation: Option<Fp8EmulationWorkspace>,
+    /// Reusable KN→NK FP8 weight staging buffer (Ada / consumer Blackwell).
+    /// Must not come from the bump allocator: per-GEMM staging would otherwise
+    /// permanently inflate arena peak by O(num_gemms).
+    fp8_tn_scratch: Option<CudaBuffer>,
 }
 
 struct Fp8EmulationWorkspace {
@@ -33,6 +37,7 @@ impl GraphWorkspace {
             storage: CudaBuffer::alloc(capacity_bytes, device).map_err(Error::Cuda)?,
             offset: Cell::new(0),
             fp8_emulation: None,
+            fp8_tn_scratch: None,
         })
     }
 
@@ -70,6 +75,17 @@ impl GraphWorkspace {
                 activation: CudaBuffer::alloc(activation_bytes, device).map_err(Error::Cuda)?,
                 weight: CudaBuffer::alloc(weight_bytes, device).map_err(Error::Cuda)?,
             });
+        }
+        // Non-Sm100 cuBLASLt FP8 uses physical TN and needs a reusable KN→NK
+        // staging buffer for graph capture / arena-bound eager.
+        if caps.arch_family != CudaArchFamily::Sm100 {
+            if max_weight_elements == 0 {
+                return Err(Error::Other(
+                    "static inference FP8 TN staging scratch capacity must be non-zero".into(),
+                ));
+            }
+            workspace.fp8_tn_scratch =
+                Some(CudaBuffer::alloc(max_weight_elements, device).map_err(Error::Cuda)?);
         }
         Ok(workspace)
     }
@@ -112,6 +128,7 @@ impl GraphWorkspace {
         self.storage.view(start, bytes).map_err(Error::Cuda)
     }
 
+    #[allow(dead_code)] // retained for diagnostics; emulation is caps/K-gated, not scratch-gated
     fn uses_fp8_emulation(&self) -> bool {
         self.fp8_emulation.is_some()
     }
@@ -147,6 +164,27 @@ impl GraphWorkspace {
                 .map_err(Error::Cuda)?,
             scratch.weight.view(0, weight_bytes).map_err(Error::Cuda)?,
         ))
+    }
+
+    fn fp8_tn_staging_buffer(&self, bytes: usize, device: usize) -> Result<CudaBuffer> {
+        let scratch = self.fp8_tn_scratch.as_ref().ok_or_else(|| {
+            Error::Other(
+                "static inference FP8 TN staging requires GraphWorkspace::new_fp8 before graph capture".into(),
+            )
+        })?;
+        if device != scratch.device() {
+            return Err(Error::Other(format!(
+                "static inference FP8 TN staging workspace is on CUDA {}, but operation targets CUDA {device}",
+                scratch.device()
+            )));
+        }
+        if bytes > scratch.len() {
+            return Err(Error::Other(format!(
+                "static inference FP8 TN staging scratch exhausted: {bytes}/{} bytes",
+                scratch.len()
+            )));
+        }
+        scratch.view(0, bytes).map_err(Error::Cuda)
     }
 }
 
@@ -313,15 +351,24 @@ pub(crate) fn output_buffer_tail_zeroed(
 }
 
 pub(crate) fn fp8_emulation_required(ctx: &CudaContext) -> Result<bool> {
-    Ok(ACTIVE_WORKSPACE.with(|active| {
+    // Pre-Ada/Hopper lack native E4M3 Tensor Cores → blanket F16 emulation.
+    // Consumer Blackwell (sm_120/121) has native FP8 for K%16==0; unaligned K
+    // is handled per-call via force_emulation in gemm_fp8, not by treating the
+    // presence of emulation scratch as a global "emulate everything" flag.
+    // (Scratch must still be allocated for the vision patch embed K=588 case.)
+    let caps = ctx.caps();
+    Ok(!(caps.compute_major > 8 || (caps.compute_major == 8 && caps.compute_minor >= 9)))
+}
+
+pub(crate) fn fp8_tn_staging_buffer(ctx: &CudaContext, bytes: usize) -> Result<CudaBuffer> {
+    ACTIVE_WORKSPACE.with(|active| {
         let workspace = active.get();
         if workspace.is_null() {
-            let caps = ctx.caps();
-            !(caps.compute_major > 8 || (caps.compute_major == 8 && caps.compute_minor >= 9))
+            CudaBuffer::alloc_on(ctx, bytes).map_err(Error::Cuda)
         } else {
-            unsafe { &*workspace }.uses_fp8_emulation()
+            unsafe { &*workspace }.fp8_tn_staging_buffer(bytes, ctx.device_id())
         }
-    }))
+    })
 }
 
 pub(crate) fn fp8_emulation_buffers(

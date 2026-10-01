@@ -687,6 +687,10 @@ pub fn gemm_fp8_geglu_fused(
         return Ok(None);
     }
     let (m, k, full_n) = (a[0], a[1], b[1]);
+    // Consumer Blackwell needs K%16 for cuBLASLt FP8; skip fused GeGLU.
+    if matches!(ctx.caps().sm, 120 | 121) && k % 16 != 0 {
+        return Ok(None);
+    }
     let n = full_n / 2;
     let alpha = activation_scale * packed_weight.scale;
     let activation_buffer = CudaBuffer::from_tensor(activation).map_err(Error::Cuda)?;
@@ -2270,7 +2274,8 @@ fn fp8_weight_scratch(ctx: &CudaContext, n: usize, k: usize) -> Result<Option<Cu
     let bytes = n
         .checked_mul(k)
         .ok_or_else(|| Error::Other("FP8 weight staging size overflow".into()))?;
-    crate::workspace::output_buffer(ctx, bytes).map(Some)
+    // Reusable TN scratch (graph slot or stream alloc-cache), never bump-arena.
+    crate::workspace::fp8_tn_staging_buffer(ctx, bytes).map(Some)
 }
 
 #[allow(clippy::too_many_arguments)]

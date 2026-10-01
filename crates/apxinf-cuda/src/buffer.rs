@@ -56,10 +56,9 @@ struct CudaAllocation {
 /// stream is never cached, which is why `CudaBuffer::alloc` does not consult
 /// this at all and `alloc_on` does.
 ///
-/// Opt-in through `APXINF_CUDA_ALLOC_CACHE` until it has been measured across
-/// the other model families. `APXINF_CUDA_ALLOC_CACHE_MB` caps retained bytes,
-/// default 4096, so a long-running process cannot grow without bound; past the
-/// cap a block is released to the driver as before.
+/// Enabled by default after measuring PI0.5 FP8 eager on sm_120 (~440 ms →
+/// ~124 ms). Set `APXINF_CUDA_ALLOC_CACHE=0` to disable. Cap retained bytes
+/// with `APXINF_CUDA_ALLOC_CACHE_MB` (default 4096).
 struct AllocCache {
     /// Pointers held as `usize`; `*mut c_void` is not `Send`.
     blocks: std::collections::HashMap<(usize, usize, usize), Vec<usize>>,
@@ -72,7 +71,16 @@ fn alloc_cache() -> Option<&'static std::sync::Mutex<AllocCache>> {
         std::sync::OnceLock::new();
     CACHE
         .get_or_init(|| {
-            std::env::var_os("APXINF_CUDA_ALLOC_CACHE")?;
+            match std::env::var_os("APXINF_CUDA_ALLOC_CACHE") {
+                Some(value)
+                    if value == "0"
+                        || value.eq_ignore_ascii_case("false")
+                        || value.eq_ignore_ascii_case("off") =>
+                {
+                    return None;
+                }
+                _ => {}
+            }
             let cap = std::env::var("APXINF_CUDA_ALLOC_CACHE_MB")
                 .ok()
                 .and_then(|value| value.parse::<usize>().ok())

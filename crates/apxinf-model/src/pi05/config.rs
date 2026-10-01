@@ -207,10 +207,10 @@ impl Pi05Config {
             )));
         }
         const ALIGNMENT: u128 = 256;
-        // Extra headroom covers consumer-Blackwell FP8 paths that occasionally
-        // allocate a few KiB beyond the static accounting (e.g. K-unaligned
-        // vision patch embed emulation intermediates during capture).
-        const SAFETY_MARGIN: u128 = 1024 * 1024 + 64 * 1024;
+        // Extra headroom for consumer-Blackwell FP8. With reusable TN staging,
+        // capture peak tracks the static ledger; measured sm_120 shortfall was
+        // ~32 KiB past a 32 MiB cushion — keep another 1 MiB.
+        const SAFETY_MARGIN: u128 = 33 * 1024 * 1024;
         let mut total = 0u128;
         let mut allocate = |bytes: usize| {
             total = (total + ALIGNMENT - 1) & !(ALIGNMENT - 1);

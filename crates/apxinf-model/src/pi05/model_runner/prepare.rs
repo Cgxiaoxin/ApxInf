@@ -17,6 +17,61 @@ fn allocate_workspace(
         None => kernels::GraphWorkspace::new(requirements.bytes, device),
     }
 }
+
+fn parse_workspace_need(error: &Error) -> Option<usize> {
+    let message = error.to_string();
+    let marker = "static inference workspace exhausted: need ";
+    let start = message.find(marker)? + marker.len();
+    let rest = &message[start..];
+    let end = rest.find(" bytes")?;
+    rest[..end].parse().ok()
+}
+
+/// After reusable TN staging, FP8 capture peak is near the static ledger; a
+/// small grow loop covers residual fused-fallthrough accounting noise.
+fn allocate_workspace_fitting(
+    requirements: &WorkspaceRequirements,
+    device: usize,
+    mut dry_run: impl FnMut(&kernels::GraphWorkspace) -> Result<()>,
+) -> Result<kernels::GraphWorkspace> {
+    let mut bytes = requirements.bytes;
+    for grow in 0..4 {
+        let sized = WorkspaceRequirements {
+            bytes,
+            fp8_scratch: requirements.fp8_scratch,
+        };
+        let workspace = allocate_workspace(&sized, device)?;
+        match dry_run(&workspace) {
+            Ok(()) => {
+                if grow > 0 {
+                    eprintln!(
+                        "[apxinf] PI0.5 workspace settled at {bytes} bytes after {grow} grow(s)"
+                    );
+                }
+                return Ok(workspace);
+            }
+            Err(error) => {
+                let Some(need) = parse_workspace_need(&error) else {
+                    return Err(error);
+                };
+                let next = need
+                    .checked_add(8 * 1024 * 1024)
+                    .ok_or_else(|| Error::Other("workspace grow overflow".into()))?;
+                if next <= bytes {
+                    return Err(error);
+                }
+                eprintln!(
+                    "[apxinf] PI0.5 workspace grow {}: need {need} > {bytes}; retry at {next}",
+                    grow + 1
+                );
+                bytes = next;
+            }
+        }
+    }
+    Err(Error::Other(
+        "PI0.5 workspace did not fit after grow attempts".into(),
+    ))
+}
 pub struct CapturedGraph {
     graph: Box<dyn Graph>,
     output: Tensor,
@@ -187,10 +242,24 @@ impl<B: PrepareBlocks> CaptureBuilder<'_, B> {
         }
         let modulation = self.model.prepare_all_modulation(time_embeddings)?;
         backend.synchronize()?;
-        let workspace = allocate_workspace(
-            &self.model.workspace_requirements(token_count)?,
-            self.ctx().device_id(),
-        )?;
+        let requirements = self.model.workspace_requirements(token_count)?;
+        let device = self.ctx().device_id();
+        let workspace = allocate_workspace_fitting(&requirements, device, |workspace| {
+            let eager_output = kernels::prepare_with_workspace(workspace, || {
+                self.infer_captured_inputs(
+                    &patches,
+                    raw_images.as_ref(),
+                    raw_image_layout,
+                    token_ids,
+                    token_count,
+                    noise,
+                    &modulation,
+                )
+            })?;
+            backend.synchronize()?;
+            drop(eager_output);
+            Ok(())
+        })?;
         let mut stable = false;
         for _ in 0..4 {
             let generation = self.ctx().tuning().generation();
