@@ -35,8 +35,10 @@ deploy risk for BF16 PreferGraph.
 
 | Check | Result |
 |---|---|
-| PreferGraph on BF16 latency path | **Active** — `logs/latency_compare_tactics/` shows ~27 ms with **no** `graph capture unavailable` fallback |
-| Explicit Eager vs RequireGraph (`pi05_auto_smoke`) | Artifact under `devlocal/.../logs/phase6_graph_eager/` (see JSON/stdout when smoke finishes); gate `eager_graph_max_abs ≤ 0.01` |
+| PreferGraph on BF16 latency path | **Active** — `logs/latency_compare_tactics/` ~27 ms, no graph-fallback log |
+| Explicit Eager vs RequireGraph (`pi05_auto_smoke`, T=44) | **PASS** — `eager_graph_max_abs = 0.0`, `raw_rgb_eager_graph_max_abs = 0.0` |
+
+Artifact: `devlocal/pi05-rtx5090/logs/phase6_graph_eager/auto_smoke.stdout`
 
 ### FP32 gold ladder (path A) — measured
 
@@ -48,6 +50,7 @@ Host-float32 OpenPI gold (`pi05_droid_seed7`) vs APXInf BF16:
 
 Artifact: `devlocal/pi05-rtx5090/logs/fp32_gold_ladder/`. Soft gates: max_abs≤0.05, cosine≥0.99, rel_l2≤0.1.
 
+### Latency table (P50)
 
 Protocol notes differ by source; treat as **order-of-magnitude / published-cell**
 compare, not a byte-identical harness.
