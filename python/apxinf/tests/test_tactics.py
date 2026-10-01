@@ -17,6 +17,7 @@ class Pi05TacticSelectionTest(unittest.TestCase):
             (101, "fp8_static", "thor-sm101"),
             (110, "bf16", "thor-sm110"),
             (110, "fp8_static", "thor-sm110"),
+            (120, "bf16", "rtx5090-sm120"),
         ]
         for sm, model_variant, directory in cases:
             with self.subTest(sm=sm, model_variant=model_variant), tempfile.TemporaryDirectory() as root:

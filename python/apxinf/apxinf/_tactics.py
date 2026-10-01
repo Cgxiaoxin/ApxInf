@@ -11,6 +11,7 @@ _DEFAULT_TACTICS = {
     89: "rtx4090-sm89",
     101: "thor-sm101",
     110: "thor-sm110",
+    120: "rtx5090-sm120",
 }
 _SOURCE_ROOT = Path(__file__).resolve().parents[3]
 
