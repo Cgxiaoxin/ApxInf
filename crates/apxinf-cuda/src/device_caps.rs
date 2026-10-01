@@ -6,6 +6,12 @@ use std::fmt;
 use crate::ffi;
 
 /// NVIDIA architecture families which share ApxInf kernel implementations.
+///
+/// `Sm80` is the FA2 / cuBLAS / `mma.sync` family (Orin, Ada, and consumer
+/// Blackwell GeForce). `Sm100` is the datacenter / Jetson Blackwell family with
+/// tcgen05 / UMMA (Thor). Do **not** put consumer `sm_120`/`sm_121` in `Sm100`:
+/// those GPUs lack tcgen05 and must reuse FA2 paths (see build-time
+/// `is_cutlass_sm100_family`).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum CudaArchFamily {
     Sm80,
@@ -75,8 +81,10 @@ impl CudaDeviceCaps {
 
     pub const fn classify(sm: u32) -> CudaArchFamily {
         match sm {
-            80 | 86 | 87 | 89 => CudaArchFamily::Sm80,
-            100 | 101 | 110 | 120 | 121 => CudaArchFamily::Sm100,
+            // FA2 / cuBLAS family — includes consumer Blackwell (no tcgen05).
+            80 | 86 | 87 | 89 | 120 | 121 => CudaArchFamily::Sm80,
+            // Datacenter / Jetson Blackwell with UMMA / tcgen05.
+            100 | 101 | 110 => CudaArchFamily::Sm100,
             other => CudaArchFamily::Other(other),
         }
     }
@@ -98,10 +106,10 @@ mod tests {
 
     #[test]
     fn classifies_supported_architecture_families() {
-        for sm in [80, 86, 87, 89] {
+        for sm in [80, 86, 87, 89, 120, 121] {
             assert_eq!(CudaDeviceCaps::classify(sm), CudaArchFamily::Sm80);
         }
-        for sm in [100, 101, 110, 120, 121] {
+        for sm in [100, 101, 110] {
             assert_eq!(CudaDeviceCaps::classify(sm), CudaArchFamily::Sm100);
         }
     }
