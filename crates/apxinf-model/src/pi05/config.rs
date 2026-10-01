@@ -653,11 +653,27 @@ impl ModelVariantChoice {
     }
     pub fn resolve(self, sm: u32, has_fp8_scales: bool) -> Self {
         match self {
-            Self::Auto if sm >= 100 && has_fp8_scales => Self::Fp8Static,
+            // Datacenter / Jetson Blackwell (Thor) only. Consumer GeForce
+            // sm_120/sm_121 advertise FP8 Tensor Cores, but the PI0.5 cuBLASLt
+            // FP8 GEMM path currently returns CUBLAS_STATUS_NOT_SUPPORTED there.
+            Self::Auto if matches!(sm, 100 | 101 | 110) && has_fp8_scales => Self::Fp8Static,
             Self::Auto if (80..100).contains(&sm) => Self::Int8Dynamic,
             Self::Auto => Self::Bf16,
             explicit => explicit,
         }
+    }
+
+    /// Explicit `fp8_static` is rejected on architectures whose FP8 GEMM path
+    /// is known not to run (fail closed at load, not at first infer).
+    pub fn ensure_supported_on(self, sm: u32) -> apxinf_core::Result<()> {
+        if self == Self::Fp8Static && matches!(sm, 120 | 121) {
+            return Err(apxinf_core::Error::Other(format!(
+                "PI0.5 model_variant=fp8_static is not supported on consumer \
+                 Blackwell SM{sm} (cuBLASLt FP8 GEMM returns NOT_SUPPORTED); \
+                 use model_variant=bf16"
+            )));
+        }
+        Ok(())
     }
 }
 impl std::str::FromStr for ModelVariantChoice {
@@ -695,6 +711,11 @@ mod model_variant_tests {
             ModelVariantChoice::Bf16
         );
         assert_eq!(
+            ModelVariantChoice::Auto.resolve(120, true),
+            ModelVariantChoice::Bf16,
+            "consumer Blackwell must not auto-select FP8"
+        );
+        assert_eq!(
             ModelVariantChoice::Auto.resolve(87, false),
             ModelVariantChoice::Int8Dynamic
         );
@@ -702,5 +723,8 @@ mod model_variant_tests {
             ModelVariantChoice::Bf16.resolve(110, true),
             ModelVariantChoice::Bf16
         );
+        assert!(ModelVariantChoice::Fp8Static.ensure_supported_on(120).is_err());
+        assert!(ModelVariantChoice::Fp8Static.ensure_supported_on(110).is_ok());
+        assert!(ModelVariantChoice::Bf16.ensure_supported_on(120).is_ok());
     }
 }

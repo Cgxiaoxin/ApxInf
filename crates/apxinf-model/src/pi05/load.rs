@@ -60,6 +60,7 @@ pub(super) fn load_model_runner(
             cuda.context().caps().sm,
             calibration_path.is_some() || options.uniform_fp8_scale.is_some(),
         );
+    model_variant.ensure_supported_on(cuda.context().caps().sm)?;
     eprintln!("[apxinf] PI0.5 model_variant={}", model_variant.as_str());
 
     let model = match model_variant {

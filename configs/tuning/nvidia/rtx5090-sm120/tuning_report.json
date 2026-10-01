@@ -45,6 +45,40 @@
           "correct": true,
           "id": 0,
           "implementation_version": 1,
+          "milliseconds": 0.3591116809844971
+        }
+      ],
+      "key": {
+        "activation_dtype": "bf16",
+        "device": {
+          "multiprocessor_count": 170,
+          "sm": 120
+        },
+        "epilogue": "geglu",
+        "k": 2048,
+        "layout": "row_major",
+        "m": 556,
+        "n": 32768,
+        "op": "bf16",
+        "output_dtype": "bf16",
+        "scale_mode": "none",
+        "weight_dtype": "bf16",
+        "workspace_limit": 18446744073709551615
+      },
+      "winner": {
+        "backend": "gemm_then_geglu",
+        "id": 0,
+        "implementation_version": 1,
+        "milliseconds": 0.3591116809844971
+      }
+    },
+    {
+      "candidates": [
+        {
+          "backend": "gemm_then_geglu",
+          "correct": true,
+          "id": 0,
+          "implementation_version": 1,
           "milliseconds": 0.5047859215736389
         }
       ],
@@ -1567,7 +1601,7 @@
           "correct": true,
           "id": 5,
           "implementation_version": 1,
-          "milliseconds": 0.010305279791355133
+          "milliseconds": 0.010305279791355131
         },
         {
           "backend": "cublaslt",
@@ -2480,6 +2514,1934 @@
         "id": 3,
         "implementation_version": 1,
         "milliseconds": 0.01859456054866314
+      }
+    },
+    {
+      "candidates": [
+        {
+          "backend": "vendor",
+          "correct": true,
+          "id": 0,
+          "implementation_version": 1,
+          "milliseconds": 0.022525440156459808
+        },
+        {
+          "backend": "cublaslt",
+          "correct": true,
+          "id": 0,
+          "implementation_version": 1,
+          "milliseconds": 0.0184294406324625
+        },
+        {
+          "backend": "cublaslt",
+          "correct": true,
+          "id": 1,
+          "implementation_version": 1,
+          "milliseconds": 0.02252672016620636
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 2,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 3,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 4,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 5,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 6,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 7,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 8,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 9,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 10,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 11,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 12,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 13,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 14,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 15,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 16,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 17,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 18,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 19,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 20,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 21,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 22,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 23,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 24,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 25,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 26,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 27,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 28,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 29,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 30,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 31,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 32,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 33,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 34,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 35,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 36,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 37,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 38,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 39,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 40,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 41,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 42,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 43,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 44,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 45,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 46,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 47,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 48,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 49,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 50,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 51,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 52,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 53,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 54,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 55,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 56,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 57,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 58,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 59,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 60,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 61,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 62,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 63,
+          "implementation_version": 1,
+          "milliseconds": null
+        }
+      ],
+      "key": {
+        "activation_dtype": "bf16",
+        "device": {
+          "multiprocessor_count": 170,
+          "sm": 120
+        },
+        "epilogue": "none",
+        "k": 1152,
+        "layout": "row_major",
+        "m": 512,
+        "n": 1152,
+        "op": "bf16",
+        "output_dtype": "bf16",
+        "scale_mode": "none",
+        "weight_dtype": "bf16",
+        "workspace_limit": 18446744073709551615
+      },
+      "winner": {
+        "backend": "cublaslt",
+        "id": 0,
+        "implementation_version": 1,
+        "milliseconds": 0.0184294406324625
+      }
+    },
+    {
+      "candidates": [
+        {
+          "backend": "vendor",
+          "correct": true,
+          "id": 0,
+          "implementation_version": 1,
+          "milliseconds": 0.02659199945628643
+        },
+        {
+          "backend": "cublaslt",
+          "correct": true,
+          "id": 0,
+          "implementation_version": 1,
+          "milliseconds": 0.02659199945628643
+        },
+        {
+          "backend": "cublaslt",
+          "correct": true,
+          "id": 1,
+          "implementation_version": 1,
+          "milliseconds": 0.03481600061058998
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 2,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 3,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 4,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 5,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 6,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 7,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 8,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 9,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 10,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 11,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 12,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 13,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 14,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 15,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 16,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 17,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 18,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 19,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 20,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 21,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 22,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 23,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 24,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 25,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 26,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 27,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 28,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 29,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 30,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 31,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 32,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 33,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 34,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 35,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 36,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 37,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 38,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 39,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 40,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 41,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 42,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 43,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 44,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 45,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 46,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 47,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 48,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 49,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 50,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 51,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 52,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 53,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 54,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 55,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 56,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 57,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 58,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 59,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 60,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 61,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 62,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 63,
+          "implementation_version": 1,
+          "milliseconds": null
+        }
+      ],
+      "key": {
+        "activation_dtype": "bf16",
+        "device": {
+          "multiprocessor_count": 170,
+          "sm": 120
+        },
+        "epilogue": "none",
+        "k": 1152,
+        "layout": "row_major",
+        "m": 512,
+        "n": 2048,
+        "op": "bf16",
+        "output_dtype": "bf16",
+        "scale_mode": "none",
+        "weight_dtype": "bf16",
+        "workspace_limit": 18446744073709551615
+      },
+      "winner": {
+        "backend": "vendor",
+        "id": 0,
+        "implementation_version": 1,
+        "milliseconds": 0.02659199945628643
+      }
+    },
+    {
+      "candidates": [
+        {
+          "backend": "vendor",
+          "correct": true,
+          "id": 0,
+          "implementation_version": 1,
+          "milliseconds": 0.03276543989777565
+        },
+        {
+          "backend": "cublaslt",
+          "correct": true,
+          "id": 0,
+          "implementation_version": 1,
+          "milliseconds": 0.0327667199075222
+        },
+        {
+          "backend": "cublaslt",
+          "correct": true,
+          "id": 1,
+          "implementation_version": 1,
+          "milliseconds": 0.032764159888029096
+        },
+        {
+          "backend": "cublaslt",
+          "correct": true,
+          "id": 2,
+          "implementation_version": 1,
+          "milliseconds": 0.0327667199075222
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 3,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 4,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 5,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 6,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 7,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 8,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 9,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 10,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 11,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 12,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 13,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 14,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 15,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 16,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 17,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 18,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 19,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 20,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 21,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 22,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 23,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 24,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 25,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 26,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 27,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 28,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 29,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 30,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 31,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 32,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 33,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 34,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 35,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 36,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 37,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 38,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 39,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 40,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 41,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 42,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 43,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 44,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 45,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 46,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 47,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 48,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 49,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 50,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 51,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 52,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 53,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 54,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 55,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 56,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 57,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 58,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 59,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 60,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 61,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 62,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 63,
+          "implementation_version": 1,
+          "milliseconds": null
+        }
+      ],
+      "key": {
+        "activation_dtype": "bf16",
+        "device": {
+          "multiprocessor_count": 170,
+          "sm": 120
+        },
+        "epilogue": "none",
+        "k": 1152,
+        "layout": "row_major",
+        "m": 512,
+        "n": 3456,
+        "op": "bf16",
+        "output_dtype": "bf16",
+        "scale_mode": "none",
+        "weight_dtype": "bf16",
+        "workspace_limit": 18446744073709551615
+      },
+      "winner": {
+        "backend": "cublaslt",
+        "id": 1,
+        "implementation_version": 1,
+        "milliseconds": 0.032764159888029096
+      }
+    },
+    {
+      "candidates": [
+        {
+          "backend": "vendor",
+          "correct": true,
+          "id": 0,
+          "implementation_version": 1,
+          "milliseconds": 0.03279871985316277
+        },
+        {
+          "backend": "cublaslt",
+          "correct": true,
+          "id": 0,
+          "implementation_version": 1,
+          "milliseconds": 0.03275519981980324
+        },
+        {
+          "backend": "cublaslt",
+          "correct": true,
+          "id": 1,
+          "implementation_version": 1,
+          "milliseconds": 0.03275007978081703
+        },
+        {
+          "backend": "cublaslt",
+          "correct": true,
+          "id": 2,
+          "implementation_version": 1,
+          "milliseconds": 0.03275519981980324
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 3,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 4,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 5,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 6,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 7,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 8,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 9,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 10,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 11,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 12,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 13,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 14,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 15,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 16,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 17,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 18,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 19,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 20,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 21,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 22,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 23,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 24,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 25,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 26,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 27,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 28,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 29,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 30,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 31,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 32,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 33,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 34,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 35,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 36,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 37,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 38,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 39,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 40,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 41,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 42,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 43,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 44,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 45,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 46,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 47,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 48,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 49,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 50,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 51,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 52,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 53,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 54,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 55,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 56,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 57,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 58,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 59,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 60,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 61,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 62,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 63,
+          "implementation_version": 1,
+          "milliseconds": null
+        }
+      ],
+      "key": {
+        "activation_dtype": "bf16",
+        "device": {
+          "multiprocessor_count": 170,
+          "sm": 120
+        },
+        "epilogue": "none",
+        "k": 1152,
+        "layout": "row_major",
+        "m": 512,
+        "n": 4304,
+        "op": "bf16",
+        "output_dtype": "bf16",
+        "scale_mode": "none",
+        "weight_dtype": "bf16",
+        "workspace_limit": 18446744073709551615
+      },
+      "winner": {
+        "backend": "cublaslt",
+        "id": 1,
+        "implementation_version": 1,
+        "milliseconds": 0.03275007978081703
       }
     },
     {
@@ -4413,6 +6375,40 @@
     {
       "candidates": [
         {
+          "backend": "cublaslt",
+          "correct": true,
+          "id": 1,
+          "implementation_version": 1,
+          "milliseconds": 0.195893332362175
+        }
+      ],
+      "key": {
+        "activation_dtype": "bf16",
+        "device": {
+          "multiprocessor_count": 170,
+          "sm": 120
+        },
+        "epilogue": "none",
+        "k": 16384,
+        "layout": "row_major",
+        "m": 556,
+        "n": 2048,
+        "op": "bf16",
+        "output_dtype": "bf16",
+        "scale_mode": "none",
+        "weight_dtype": "bf16",
+        "workspace_limit": 18446744073709551615
+      },
+      "winner": {
+        "backend": "cublaslt",
+        "id": 1,
+        "implementation_version": 1,
+        "milliseconds": 0.195893332362175
+      }
+    },
+    {
+      "candidates": [
+        {
           "backend": "vendor",
           "correct": true,
           "id": 0,
@@ -5372,6 +7368,556 @@
         "id": 3,
         "implementation_version": 1,
         "milliseconds": 0.01228800043463707
+      }
+    },
+    {
+      "candidates": [
+        {
+          "backend": "cublaslt",
+          "correct": true,
+          "id": 0,
+          "implementation_version": 1,
+          "milliseconds": 0.02867200039327145
+        }
+      ],
+      "key": {
+        "activation_dtype": "bf16",
+        "device": {
+          "multiprocessor_count": 170,
+          "sm": 120
+        },
+        "epilogue": "none",
+        "k": 2048,
+        "layout": "row_major",
+        "m": 556,
+        "n": 2048,
+        "op": "bf16",
+        "output_dtype": "bf16",
+        "scale_mode": "none",
+        "weight_dtype": "bf16",
+        "workspace_limit": 18446744073709551615
+      },
+      "winner": {
+        "backend": "cublaslt",
+        "id": 0,
+        "implementation_version": 1,
+        "milliseconds": 0.02867200039327145
+      }
+    },
+    {
+      "candidates": [
+        {
+          "backend": "vendor",
+          "correct": true,
+          "id": 0,
+          "implementation_version": 1,
+          "milliseconds": 0.08183935791254043
+        },
+        {
+          "backend": "cublaslt",
+          "correct": true,
+          "id": 0,
+          "implementation_version": 1,
+          "milliseconds": 0.08175615787506103
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 1,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 2,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 3,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 4,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 5,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 6,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 7,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 8,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 9,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 10,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 11,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 12,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 13,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 14,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 15,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 16,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 17,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 18,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 19,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 20,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 21,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 22,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 23,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 24,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 25,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 26,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 27,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 28,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 29,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 30,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 31,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 32,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 33,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 34,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 35,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 36,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 37,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 38,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 39,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 40,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 41,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 42,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 43,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 44,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 45,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 46,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 47,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 48,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 49,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 50,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 51,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 52,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 53,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 54,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 55,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 56,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 57,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 58,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 59,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 60,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 61,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 62,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 63,
+          "implementation_version": 1,
+          "milliseconds": null
+        }
+      ],
+      "key": {
+        "activation_dtype": "bf16",
+        "device": {
+          "multiprocessor_count": 170,
+          "sm": 120
+        },
+        "epilogue": "none",
+        "k": 2048,
+        "layout": "row_major",
+        "m": 556,
+        "n": 2560,
+        "op": "bf16",
+        "output_dtype": "bf16",
+        "scale_mode": "none",
+        "weight_dtype": "bf16",
+        "workspace_limit": 18446744073709551615
+      },
+      "winner": {
+        "backend": "cublaslt",
+        "id": 0,
+        "implementation_version": 1,
+        "milliseconds": 0.08175615787506103
+      }
+    },
+    {
+      "candidates": [
+        {
+          "backend": "cublaslt",
+          "correct": true,
+          "id": 1,
+          "implementation_version": 1,
+          "milliseconds": 0.3454293409983317
+        }
+      ],
+      "key": {
+        "activation_dtype": "bf16",
+        "device": {
+          "multiprocessor_count": 170,
+          "sm": 120
+        },
+        "epilogue": "none",
+        "k": 2048,
+        "layout": "row_major",
+        "m": 556,
+        "n": 32768,
+        "op": "bf16",
+        "output_dtype": "bf16",
+        "scale_mode": "none",
+        "weight_dtype": "bf16",
+        "workspace_limit": 18446744073709551615
+      },
+      "winner": {
+        "backend": "cublaslt",
+        "id": 1,
+        "implementation_version": 1,
+        "milliseconds": 0.3454293409983317
       }
     },
     {
@@ -7791,6 +10337,488 @@
           "correct": true,
           "id": 0,
           "implementation_version": 1,
+          "milliseconds": 0.03956735849380493
+        },
+        {
+          "backend": "cublaslt",
+          "correct": true,
+          "id": 0,
+          "implementation_version": 1,
+          "milliseconds": 0.03628800109028816
+        },
+        {
+          "backend": "cublaslt",
+          "correct": true,
+          "id": 1,
+          "implementation_version": 1,
+          "milliseconds": 0.04104191899299622
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 2,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 3,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 4,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 5,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 6,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 7,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 8,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 9,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 10,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 11,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 12,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 13,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 14,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 15,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 16,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 17,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 18,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 19,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 20,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 21,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 22,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 23,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 24,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 25,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 26,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 27,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 28,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 29,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 30,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 31,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 32,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 33,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 34,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 35,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 36,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 37,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 38,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 39,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 40,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 41,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 42,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 43,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 44,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 45,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 46,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 47,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 48,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 49,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 50,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 51,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 52,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 53,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 54,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 55,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 56,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 57,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 58,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 59,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 60,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 61,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 62,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 63,
+          "implementation_version": 1,
+          "milliseconds": null
+        }
+      ],
+      "key": {
+        "activation_dtype": "bf16",
+        "device": {
+          "multiprocessor_count": 170,
+          "sm": 120
+        },
+        "epilogue": "none",
+        "k": 4304,
+        "layout": "row_major",
+        "m": 512,
+        "n": 1152,
+        "op": "bf16",
+        "output_dtype": "bf16",
+        "scale_mode": "none",
+        "weight_dtype": "bf16",
+        "workspace_limit": 18446744073709551615
+      },
+      "winner": {
+        "backend": "cublaslt",
+        "id": 0,
+        "implementation_version": 1,
+        "milliseconds": 0.03628800109028816
+      }
+    },
+    {
+      "candidates": [
+        {
+          "backend": "vendor",
+          "correct": true,
+          "id": 0,
+          "implementation_version": 1,
           "milliseconds": 0.045050880312919615
         },
         {
@@ -8264,6 +11292,488 @@
         "id": 0,
         "implementation_version": 1,
         "milliseconds": 0.045035520195961
+      }
+    },
+    {
+      "candidates": [
+        {
+          "backend": "vendor",
+          "correct": true,
+          "id": 0,
+          "implementation_version": 1,
+          "milliseconds": 0.012282880395650864
+        },
+        {
+          "backend": "cublaslt",
+          "correct": true,
+          "id": 0,
+          "implementation_version": 1,
+          "milliseconds": 0.012285440415143966
+        },
+        {
+          "backend": "cublaslt",
+          "correct": true,
+          "id": 1,
+          "implementation_version": 1,
+          "milliseconds": 0.01636095978319645
+        },
+        {
+          "backend": "cublaslt",
+          "correct": true,
+          "id": 2,
+          "implementation_version": 1,
+          "milliseconds": 0.0144089600071311
+        },
+        {
+          "backend": "cublaslt",
+          "correct": true,
+          "id": 3,
+          "implementation_version": 1,
+          "milliseconds": 0.014583040177822111
+        },
+        {
+          "backend": "cublaslt",
+          "correct": true,
+          "id": 4,
+          "implementation_version": 1,
+          "milliseconds": 0.016380159929394723
+        },
+        {
+          "backend": "cublaslt",
+          "correct": true,
+          "id": 5,
+          "implementation_version": 1,
+          "milliseconds": 0.018430720642209054
+        },
+        {
+          "backend": "cublaslt",
+          "correct": true,
+          "id": 6,
+          "implementation_version": 1,
+          "milliseconds": 0.018508800566196443
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 7,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 8,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 9,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 10,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 11,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 12,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 13,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 14,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 15,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 16,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 17,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 18,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 19,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 20,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 21,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 22,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 23,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 24,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 25,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 26,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 27,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 28,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 29,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 30,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 31,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 32,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 33,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 34,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 35,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 36,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 37,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 38,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 39,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 40,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 41,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 42,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 43,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 44,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 45,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 46,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 47,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 48,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 49,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 50,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 51,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 52,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 53,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 54,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 55,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 56,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 57,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 58,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 59,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 60,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 61,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 62,
+          "implementation_version": 1,
+          "milliseconds": null
+        },
+        {
+          "backend": "cublaslt",
+          "correct": false,
+          "id": 63,
+          "implementation_version": 1,
+          "milliseconds": null
+        }
+      ],
+      "key": {
+        "activation_dtype": "bf16",
+        "device": {
+          "multiprocessor_count": 170,
+          "sm": 120
+        },
+        "epilogue": "none",
+        "k": 588,
+        "layout": "row_major",
+        "m": 512,
+        "n": 1152,
+        "op": "bf16",
+        "output_dtype": "bf16",
+        "scale_mode": "none",
+        "weight_dtype": "bf16",
+        "workspace_limit": 18446744073709551615
+      },
+      "winner": {
+        "backend": "vendor",
+        "id": 0,
+        "implementation_version": 1,
+        "milliseconds": 0.012282880395650864
       }
     },
     {
