@@ -108,15 +108,28 @@ _LOGGER = logging.getLogger("apxinf.policies.pi05")
 _PROMPT_KEY = "prompt"
 
 
-def _normalizer_from_transform(spec: TransformSpec, *, dtype=None) -> Optional[Normalizer]:
-    """Materialize a canonical checkpoint transform as an ApxInf processor."""
+def _normalizer_from_transform(
+    spec: TransformSpec, *, dims: Optional[int] = None, dtype=None
+) -> Optional[Normalizer]:
+    """Materialize a canonical checkpoint transform as an ApxInf processor.
+
+    ``dims`` trims the checkpoint statistics to the *robot* proprio width used in
+    the discrete-state prompt. OpenPI tokenizes state **before** pad-to-model-dim,
+    so DROID needs ``dims=8`` against a 32-wide ``norm_stats.json``.
+    """
     if spec.mode == IDENTITY:
         return None
+    width = spec.width if dims is None else int(dims)
+    if width <= 0 or width > spec.width:
+        raise ValueError(
+            f"state_dim={width} is incompatible with checkpoint normalization width {spec.width}"
+        )
     if spec.mode == QUANTILE:
         return Normalizer(
             q01=spec.values["q01"],
             q99=spec.values["q99"],
             mode=QUANTILE,
+            dims=width,
             eps=spec.eps,
             dtype=dtype,
         )
@@ -126,6 +139,7 @@ def _normalizer_from_transform(spec: TransformSpec, *, dtype=None) -> Optional[N
             mean=spec.values["mean"],
             std=std,
             mode=MEAN_STD,
+            dims=width,
             eps=0.0,
             dtype=dtype,
         )
@@ -345,6 +359,7 @@ class Pi05Policy:
         norm_key: str = "actions",
         unnormalizer: Optional[Unnormalizer] = None,
         action_dim: Optional[int] = None,
+        state_dim: Optional[int] = None,
         action_horizon: Optional[int] = None,
         num_flow_steps: Optional[int] = None,
         flow_start_time: Optional[float] = None,
@@ -376,6 +391,12 @@ class Pi05Policy:
         width; ``None`` uses the transform's full width. ``unnormalizer`` replaces
         that action transform and determines the width, so it cannot be combined
         with ``action_dim``.
+        ``state_dim`` likewise trims the *state* normalizer used when
+        ``discrete_state=True``. OpenPI runs ``TokenizePrompt`` **before**
+        ``PadStatesAndActions``, so the discrete prompt sees only the robot
+        proprio width (e.g. 8 for DROID) even when ``norm_stats.json`` stores
+        32-wide padded statistics. Pass ``state_dim`` to match that contract;
+        ``None`` keeps the checkpoint's full state width.
         ``action_horizon`` overrides
         the checkpoint's chunk length: ``None`` runs the native ``config.json``
         value, an explicit value outranks it (the horizon is a sequence length,
@@ -445,6 +466,14 @@ class Pi05Policy:
                 f"supplied unnormalizer's width {unnormalizer.width}; the injected map "
                 "already sets the deployable width, so pass only one"
             )
+        if state_dim is not None and not discrete_state:
+            raise ValueError(
+                "Pi05Policy.from_pretrained: state_dim= only applies with "
+                "discrete_state=True (it trims the state normalizer that feeds the "
+                "discrete prompt)"
+            )
+        if state_dim is not None and int(state_dim) <= 0:
+            raise ValueError(f"Pi05Policy.from_pretrained: state_dim must be > 0, got {state_dim}")
 
         # Declared layouts are validated before loading weights. Flat native
         # directories remain valid and may supply ``norm_stats`` directly.
@@ -581,7 +610,7 @@ class Pi05Policy:
                 )
             )
             state_normalizer = (
-                _normalizer_from_transform(plan.state, dtype=norm_dtype)
+                _normalizer_from_transform(plan.state, dims=state_dim, dtype=norm_dtype)
                 if discrete_state and plan.state is not None
                 else None
             )
@@ -600,6 +629,13 @@ class Pi05Policy:
                     "embodiment-level parity.",
                     model_dir,
                 )
+        else:
+            state_normalizer = None
+        effective_state_dim = (
+            state_normalizer.width
+            if state_normalizer is not None
+            else (int(state_dim) if state_dim is not None else None)
+        )
         reset_sampling = getattr(model_runner, "reset_sampling", None)
         if callable(reset_sampling):
             reset_sampling(int(seed))
@@ -628,7 +664,7 @@ class Pi05Policy:
             action_dim=unnormalizer.width,
             metadata={
                 "normalization": normalization_metadata,
-                **({"state_dim": plan.state.width} if plan.state is not None else {}),
+                **({"state_dim": effective_state_dim} if effective_state_dim is not None else {}),
                 **(dict(metadata) if metadata else {}),
             },
         )
