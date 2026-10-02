@@ -31,14 +31,18 @@ Artifact: `devlocal/pi05-rtx5090/logs/fp32/latency_compare/`
 
 | Path | P50 |
 |---|---:|
-| APXInf **fp32** (this smoke) | **91.29 ms** |
+| APXInf **fp32** (initial smoke) | **91.29 ms** |
+| APXInf **fp32** (TF32 GEMM + cuBLAS MQA) | **65.68 ms** |
 | APXInf bf16 PreferGraph (prior) | ~27.33 ms |
 | OpenPI JAX (prior) | ~61.24 ms |
 
-FP32 is the correctness / reference executor, not the deploy latency path yet.
+FP32 is still the correctness / reference executor; BF16 remains the deploy
+latency path on 5090. Acceleration so far: enable TF32 for F32 GEMM and route
+MQA through cuBLAS instead of the naive reference attention kernel.
 
 ## Next
 
-- PreferGraph capture for FP32 (if workspace allows)
-- Optional cuBLASLt / tactics for F32 GEMMs
+- PreferGraph capture for FP32 (workspace may need a larger arena)
+- Optional cuBLASLt / tactics for remaining F32 shapes; MHA (vision) still on reference kernel
 - Keep BF16 as the 5090 ship path until FP32 is competitive where needed
+- See `doc/pi05-sft-fp32-deploy.md` for SFT checkpoint usage

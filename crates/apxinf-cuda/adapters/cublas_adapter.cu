@@ -81,6 +81,53 @@ extern "C" int apxinf_static_cublas_mqa_f16(
   return static_cast<int>(status);
 }
 
+extern "C" int apxinf_static_cublas_mqa_f32(
+    const void* q, const void* k, const void* v, void* output,
+    int query_tokens, int key_tokens, int heads, int head_dim,
+    cudaStream_t stream) {
+  if (q == nullptr || k == nullptr || v == nullptr || output == nullptr ||
+      query_tokens <= 0 || key_tokens <= 0 ||
+      key_tokens > kSoftmaxMaxCols || heads <= 0 || head_dim <= 0) {
+    return static_cast<int>(CUBLAS_STATUS_INVALID_VALUE);
+  }
+  int rows = query_tokens * heads;
+  size_t logits_bytes =
+      static_cast<size_t>(rows) * key_tokens * sizeof(float);
+  cublasStatus_t status = initialize_mqa(logits_bytes);
+  if (status != CUBLAS_STATUS_SUCCESS) return static_cast<int>(status);
+  status = cublasSetStream(g_mqa_blas, stream);
+  if (status != CUBLAS_STATUS_SUCCESS) return static_cast<int>(status);
+
+  float attention_scale = rsqrtf(static_cast<float>(head_dim));
+  float zero = 0.0f;
+  auto* logits = reinterpret_cast<float*>(g_mqa_logits);
+  status = cublasGemmEx(
+      g_mqa_blas, CUBLAS_OP_T, CUBLAS_OP_N,
+      key_tokens, rows, head_dim, &attention_scale,
+      k, CUDA_R_32F, head_dim,
+      q, CUDA_R_32F, head_dim,
+      &zero, logits, CUDA_R_32F, key_tokens,
+      CUBLAS_COMPUTE_32F_FAST_TF32, CUBLAS_GEMM_DEFAULT);
+  if (status != CUBLAS_STATUS_SUCCESS) return static_cast<int>(status);
+
+  dim3 block(256);
+  dim3 grid((key_tokens + block.x - 1) / block.x, rows);
+  softmax_f32_kernel<<<grid, block, 0, stream>>>(logits, logits, key_tokens, rows);
+  if (cudaPeekAtLastError() != cudaSuccess) {
+    return static_cast<int>(CUBLAS_STATUS_EXECUTION_FAILED);
+  }
+
+  float one = 1.0f;
+  status = cublasGemmEx(
+      g_mqa_blas, CUBLAS_OP_N, CUBLAS_OP_N,
+      head_dim, rows, key_tokens, &one,
+      v, CUDA_R_32F, head_dim,
+      logits, CUDA_R_32F, key_tokens,
+      &zero, output, CUDA_R_32F, head_dim,
+      CUBLAS_COMPUTE_32F_FAST_TF32, CUBLAS_GEMM_DEFAULT);
+  return static_cast<int>(status);
+}
+
 extern "C" int apxinf_static_cublas_mqa_bf16(
     const void* q, const void* k, const void* v, void* output,
     int query_tokens, int key_tokens, int heads, int head_dim,

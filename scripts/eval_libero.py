@@ -405,7 +405,7 @@ class WebsocketBackend:
         self._keys = keys
         actual_precision = self.metadata.get("precision")
         if "model_variant" in self.metadata:
-            actual_precision = {"bf16": "bf16", "fp8_static": "fp8", "int8_dynamic": "int8"}.get(self.metadata["model_variant"])
+            actual_precision = {"bf16": "bf16", "fp8_static": "fp8", "int8_dynamic": "int8", "fp32": "fp32"}.get(self.metadata["model_variant"])
 
         if actual_precision != expected_precision:
             self.close()
@@ -511,7 +511,7 @@ class InProcessBackend:
         # Campaign precision is a numerical comparison category in the ledger.
         # PI0.5 loading uses a model-local implementation ID instead.
         selector = (
-            {"model_variant": {"bf16": "bf16", "fp8": "fp8_static", "int8": "int8_dynamic"}[args.precision]}
+            {"model_variant": {"bf16": "bf16", "fp8": "fp8_static", "int8": "int8_dynamic", "fp32": "fp32"}[args.precision]}
             if model_type == "pi05" else {"precision": args.precision}
         )
         self._policy = AutoPolicy.from_pretrained(
@@ -736,7 +736,7 @@ def parse_args() -> argparse.Namespace:
         "--backend", choices=("websocket", "in-process"), required=True,
         help="reach the model through a running server, or build it in-process",
     )
-    parser.add_argument("--precision", choices=("fp8", "bf16", "int8"), required=True)
+    parser.add_argument("--precision", choices=("fp8", "bf16", "int8", "fp32"), required=True)
     parser.add_argument("--suite", default="libero_10", choices=(*ALL_SUITES, "all"))
     parser.add_argument(
         "--tasks", default="all",

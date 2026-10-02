@@ -34,6 +34,7 @@ pub enum cudaDataType_t {
 #[derive(Debug, Clone, Copy)]
 pub enum cublasComputeType_t {
     CUBLAS_COMPUTE_32F = 68,
+    CUBLAS_COMPUTE_32F_FAST_TF32 = 77,
     CUBLAS_COMPUTE_32I = 72,
 }
 
@@ -111,6 +112,17 @@ extern "C" {
         algo: i32, // CUBLAS_GEMM_DEFAULT = -1
     ) -> cublasStatus_t;
     pub fn apxinf_static_cublas_mqa_f16(
+        q: *const c_void,
+        k: *const c_void,
+        v: *const c_void,
+        output: *mut c_void,
+        query_tokens: i32,
+        key_tokens: i32,
+        heads: i32,
+        head_dim: i32,
+        stream: cudaStream_t,
+    ) -> cublasStatus_t;
+    pub fn apxinf_static_cublas_mqa_f32(
         q: *const c_void,
         k: *const c_void,
         v: *const c_void,
