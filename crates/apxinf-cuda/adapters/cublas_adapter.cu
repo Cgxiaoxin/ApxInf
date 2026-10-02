@@ -107,7 +107,7 @@ extern "C" int apxinf_static_cublas_mqa_f32(
       k, CUDA_R_32F, head_dim,
       q, CUDA_R_32F, head_dim,
       &zero, logits, CUDA_R_32F, key_tokens,
-      CUBLAS_COMPUTE_32F_FAST_TF32, CUBLAS_GEMM_DEFAULT);
+      CUBLAS_COMPUTE_32F, CUBLAS_GEMM_DEFAULT);
   if (status != CUBLAS_STATUS_SUCCESS) return static_cast<int>(status);
 
   dim3 block(256);
@@ -124,7 +124,7 @@ extern "C" int apxinf_static_cublas_mqa_f32(
       v, CUDA_R_32F, head_dim,
       logits, CUDA_R_32F, key_tokens,
       &zero, output, CUDA_R_32F, head_dim,
-      CUBLAS_COMPUTE_32F_FAST_TF32, CUBLAS_GEMM_DEFAULT);
+      CUBLAS_COMPUTE_32F, CUBLAS_GEMM_DEFAULT);
   return static_cast<int>(status);
 }
 

@@ -767,24 +767,6 @@ pub fn mqa_f32(
         return Err(Error::Other("FP32 MQA shape mismatch".into()));
     }
     let output = f32_buffer(ctx, q_shape, "MQA")?;
-    // Prefer cuBLAS TF32 GEMM + softmax; fall back to the reference kernel if
-    // the vendor path rejects the shape (e.g. key_tokens over the MQA logits cap).
-    let cublas_status = unsafe {
-        ffi::apxinf_static_cublas_mqa_f32(
-            gpu_ptr(q)?,
-            gpu_ptr(k)?,
-            gpu_ptr(v)?,
-            output.ptr(),
-            dim_i32(q_shape[0], "query tokens")?,
-            dim_i32(key_tokens, "key tokens")?,
-            dim_i32(q_shape[1], "heads")?,
-            dim_i32(q_shape[2], "head dim")?,
-            ctx.stream().handle(),
-        )
-    };
-    if cublas_status == 0 {
-        return Ok(f32_tensor(output, q_shape.to_vec()));
-    }
     check_cuda(unsafe {
         ffi::apxinf_fp32_mqa(
             gpu_ptr(q)?,

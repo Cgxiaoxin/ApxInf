@@ -78,29 +78,25 @@ impl CublasHandle {
         let k_i = k as i32;
 
         match dtype {
-            // Prefer TF32 tensor-core GEMM for native FP32 activations/weights.
-            // Exact FP32 CUDA-core math remains available via gemm_ex(..., COMPUTE_32F).
+            // Native FP32 targets exact cuBLAS FP32 compute (not TF32). TF32 is
+            // a separate opt-in acceleration path; default must preserve the
+            // FP32 gold ladder soft gates.
             DType::F32 => unsafe {
-                ffi::check_cublas(ffi::cublasGemmEx(
+                ffi::check_cublas(ffi::cublasSgemm_v2(
                     self.handle,
                     ffi::cublasOperation_t::CUBLAS_OP_N,
                     ffi::cublasOperation_t::CUBLAS_OP_N,
                     n_i,
                     m_i,
                     k_i,
-                    (&alpha as *const f32) as *const c_void,
+                    &alpha,
                     b.ptr(),
-                    ffi::cudaDataType_t::CUDA_R_32F,
                     n_i,
                     a.ptr(),
-                    ffi::cudaDataType_t::CUDA_R_32F,
                     k_i,
-                    (&beta as *const f32) as *const c_void,
+                    &beta,
                     c.ptr() as *mut c_void,
-                    ffi::cudaDataType_t::CUDA_R_32F,
                     n_i,
-                    ffi::cublasComputeType_t::CUBLAS_COMPUTE_32F_FAST_TF32,
-                    -1, // CUBLAS_GEMM_DEFAULT
                 ))
             },
             DType::F16 | DType::BF16 => {
