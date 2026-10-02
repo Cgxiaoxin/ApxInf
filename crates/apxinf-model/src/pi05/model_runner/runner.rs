@@ -658,6 +658,7 @@ fn normalize_tensor(
             shape,
             &values.into_iter().map(bf16::from_f32).collect::<Vec<_>>(),
         )?,
+        DType::F32 => Tensor::from_f32(shape, &values)?,
         _ => {
             return Err(Error::Other(format!(
                 "PI0.5 cannot normalize {label} to {dtype}"

@@ -423,6 +423,16 @@ impl Pi05Config {
             .ok_or_else(|| Error::Other("pi05 BF16 CUDA workspace exceeds address space".into()))
     }
 
+    /// Conservative arena reservation for the native-FP32 graph.
+    ///
+    /// Every FP32 intermediate is four bytes against the BF16 schedule's two,
+    /// so doubling the BF16 bound covers the same stable-address arena.
+    pub fn cuda_graph_workspace_bytes_fp32(&self, token_count: usize) -> Result<usize> {
+        self.cuda_graph_workspace_bytes_bf16(token_count)?
+            .checked_mul(2)
+            .ok_or_else(|| Error::Other("pi05 FP32 CUDA workspace exceeds address space".into()))
+    }
+
     /// Conservative reservation for the first W8A8 implementation.
     ///
     /// Each linear stores a one-byte quantized activation and a two-byte BF16
@@ -644,6 +654,8 @@ pub enum ModelVariantChoice {
     Bf16,
     Fp8Static,
     Int8Dynamic,
+    /// Native FP32 reference executor. Explicit opt-in only: `Auto` never resolves here.
+    Fp32,
 }
 impl ModelVariantChoice {
     pub fn as_str(self) -> &'static str {
@@ -652,6 +664,7 @@ impl ModelVariantChoice {
             Self::Bf16 => "bf16",
             Self::Fp8Static => "fp8_static",
             Self::Int8Dynamic => "int8_dynamic",
+            Self::Fp32 => "fp32",
         }
     }
     pub fn resolve(self, sm: u32, has_fp8_scales: bool) -> Self {
@@ -672,7 +685,8 @@ impl std::str::FromStr for ModelVariantChoice {
         match value {
             "auto" => Ok(Self::Auto), "bf16" => Ok(Self::Bf16),
             "fp8_static" => Ok(Self::Fp8Static), "int8_dynamic" => Ok(Self::Int8Dynamic),
-            _ => Err(apxinf_core::Error::Other(format!("unknown PI0.5 model_variant {value:?}; expected auto, bf16, fp8_static or int8_dynamic"))),
+            "fp32" => Ok(Self::Fp32),
+            _ => Err(apxinf_core::Error::Other(format!("unknown PI0.5 model_variant {value:?}; expected auto, bf16, fp8_static, int8_dynamic or fp32"))),
         }
     }
 }
@@ -686,10 +700,12 @@ mod model_variant_tests {
             ModelVariantChoice::Bf16,
             ModelVariantChoice::Fp8Static,
             ModelVariantChoice::Int8Dynamic,
+            ModelVariantChoice::Fp32,
         ] {
             assert_eq!(v.as_str().parse::<ModelVariantChoice>().unwrap(), v);
         }
-        for ambiguous in ["fp8", "int8", "w8a8", "unknown"] {
+        assert_eq!(ModelVariantChoice::Fp32.as_str(), "fp32");
+        for ambiguous in ["fp8", "int8", "w8a8", "f32", "float32", "FP32", "unknown"] {
             assert!(ambiguous.parse::<ModelVariantChoice>().is_err());
         }
         assert_eq!(
@@ -713,5 +729,22 @@ mod model_variant_tests {
             ModelVariantChoice::Bf16.resolve(110, true),
             ModelVariantChoice::Bf16
         );
+    }
+
+    #[test]
+    fn auto_never_resolves_to_fp32_and_explicit_fp32_is_preserved() {
+        for sm in [70, 75, 80, 86, 87, 89, 90, 100, 101, 110, 120, 121] {
+            for has_scales in [false, true] {
+                assert_ne!(
+                    ModelVariantChoice::Auto.resolve(sm, has_scales),
+                    ModelVariantChoice::Fp32,
+                    "auto must never select fp32 (sm={sm}, scales={has_scales})"
+                );
+                assert_eq!(
+                    ModelVariantChoice::Fp32.resolve(sm, has_scales),
+                    ModelVariantChoice::Fp32
+                );
+            }
+        }
     }
 }

@@ -1,10 +1,10 @@
 //! Construction and typed dispatch of loaded PI0.5 computation. No execution policy or capture ownership.
-use super::blocks::{Bf16Blocks, Fp8StaticBlocks, Int8DynamicBlocks};
+use super::blocks::{Bf16Blocks, Fp32Blocks, Fp8StaticBlocks, Int8DynamicBlocks};
 use super::Pi05Model;
-use super::{Bf16Model, Fp8StaticModel, Int8DynamicModel};
+use super::{Bf16Model, Fp32Model, Fp8StaticModel, Int8DynamicModel};
 use crate::pi05::backend::RuntimeBackend;
 use crate::pi05::weights::{
-    Bf16Weights, Fp8StaticActivationScales, Fp8StaticWeights, Int8DynamicWeights,
+    Bf16Weights, Fp32Weights, Fp8StaticActivationScales, Fp8StaticWeights, Int8DynamicWeights,
 };
 use crate::pi05::{sinusoidal_time_embedding, Pi05Config};
 use apxinf_core::{Backend, Result, Tensor};
@@ -15,6 +15,15 @@ pub fn build_bf16_model(
     weights: Arc<Bf16Weights>,
 ) -> Result<Arc<Pi05Model<Bf16Blocks>>> {
     Ok(Arc::new(Pi05Model::from_blocks(Bf16Blocks::new(
+        backend, config, weights,
+    )?)))
+}
+pub fn build_fp32_model(
+    backend: Arc<RuntimeBackend>,
+    config: Arc<Pi05Config>,
+    weights: Arc<Fp32Weights>,
+) -> Result<Arc<Pi05Model<Fp32Blocks>>> {
+    Ok(Arc::new(Pi05Model::from_blocks(Fp32Blocks::new(
         backend, config, weights,
     )?)))
 }
@@ -54,6 +63,26 @@ pub fn upload_time_embeddings_bf16(
             .map(half::bf16::from_f32)
             .collect::<Vec<_>>();
             backend.to_device(&Tensor::from_bf16(
+                vec![1, config.action_expert.width],
+                &values,
+            )?)
+        })
+        .collect()
+}
+pub fn upload_time_embeddings_fp32(
+    config: &Pi05Config,
+    backend: &dyn Backend,
+) -> Result<Vec<Tensor>> {
+    (0..config.num_flow_steps)
+        .map(|step| {
+            let time = config.flow_start_time * (1.0 - step as f32 / config.num_flow_steps as f32);
+            let values = sinusoidal_time_embedding(
+                time,
+                config.action_expert.width,
+                config.time_min_period,
+                config.time_max_period,
+            );
+            backend.to_device(&Tensor::from_f32(
                 vec![1, config.action_expert.width],
                 &values,
             )?)
@@ -100,6 +129,10 @@ pub(in crate::pi05) enum ModelVariant {
         model: Int8DynamicModel,
         time_embeddings: Arc<Vec<Tensor>>,
     },
+    Fp32 {
+        model: Fp32Model,
+        time_embeddings: Arc<Vec<Tensor>>,
+    },
 }
 
 impl ModelVariant {
@@ -108,12 +141,14 @@ impl ModelVariant {
             Self::Bf16 { .. } => "bf16",
             Self::Fp8Static { .. } => "fp8_static",
             Self::Int8Dynamic { .. } => "int8_dynamic",
+            Self::Fp32 { .. } => "fp32",
         }
     }
 
     pub(in crate::pi05) fn input_dtype(&self) -> DType {
         match self {
             Self::Fp8Static { .. } => DType::F16,
+            Self::Fp32 { .. } => DType::F32,
             Self::Bf16 { .. } | Self::Int8Dynamic { .. } => DType::BF16,
         }
     }
@@ -154,6 +189,10 @@ impl ModelVariant {
                 model,
                 time_embeddings,
             } => model.infer(patches, token_ids, token_count, noise, time_embeddings),
+            Self::Fp32 {
+                model,
+                time_embeddings,
+            } => model.infer(patches, token_ids, token_count, noise, time_embeddings),
         }
     }
 
@@ -168,6 +207,10 @@ impl ModelVariant {
                 time_embeddings,
             } => operation.run(model, time_embeddings),
             Self::Int8Dynamic {
+                model,
+                time_embeddings,
+            } => operation.run(model, time_embeddings),
+            Self::Fp32 {
                 model,
                 time_embeddings,
             } => operation.run(model, time_embeddings),
@@ -187,6 +230,7 @@ impl ModelVariant {
             Self::Bf16 { model, .. } => model.blocks.preprocess(images, patches, layout),
             Self::Fp8Static { model, .. } => model.blocks.preprocess(images, patches, layout),
             Self::Int8Dynamic { model, .. } => model.blocks.preprocess(images, patches, layout),
+            Self::Fp32 { model, .. } => model.blocks.preprocess(images, patches, layout),
         }
     }
     pub(in crate::pi05) fn calibrate(

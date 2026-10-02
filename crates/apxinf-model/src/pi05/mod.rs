@@ -28,6 +28,11 @@ pub use model::{
 };
 #[cfg(feature = "cuda")]
 pub use model::{
+    action_layer_fp32, language_layer_fp32, vision_layer_fp32, vision_patch_embed_fp32,
+    Fp32ActionLayerOutput, Fp32LanguageLayerOutput,
+};
+#[cfg(feature = "cuda")]
+pub use model::{
     action_layer_fp8_static, language_layer_fp8_static, vision_layer_fp8_static,
     vision_patch_embed_fp8_static, vision_patch_embed_fp8_static_native,
     vision_qkv_packed_from_env, Fp8StaticActionLayerOutput, Fp8StaticLanguageLayerOutput,
@@ -50,13 +55,15 @@ pub(crate) fn register_builtin() {
 pub use backend::ImageLayout as Pi05ImageLayout;
 #[cfg(feature = "cuda")]
 pub use model::{
-    build_bf16_model, build_fp8_static_model, build_int8_dynamic_model,
-    upload_time_embeddings_bf16, upload_time_embeddings_fp8_static,
+    build_bf16_model, build_fp32_model, build_fp8_static_model, build_int8_dynamic_model,
+    upload_time_embeddings_bf16, upload_time_embeddings_fp32, upload_time_embeddings_fp8_static,
     upload_time_embeddings_int8_dynamic,
 };
 #[cfg(feature = "cuda")]
-pub use model::{Bf16Model, Fp8StaticModel, Int8DynamicModel};
+pub use model::{Bf16Model, Fp32Model, Fp8StaticModel, Int8DynamicModel};
 #[cfg(feature = "cuda")]
-pub use model::{Bf16PrefixKvCache, Fp8StaticPrefixKvCache, Int8DynamicPrefixKvCache};
+pub use model::{
+    Bf16PrefixKvCache, Fp32PrefixKvCache, Fp8StaticPrefixKvCache, Int8DynamicPrefixKvCache,
+};
 #[cfg(feature = "cuda")]
 pub use model_runner::{capture_patches, capture_rgb, CapturedGraph};

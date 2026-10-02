@@ -10,6 +10,7 @@ pub mod cache;
 mod contracts;
 pub mod elementwise;
 pub mod embedding;
+pub mod fp32;
 pub mod fused;
 pub mod gdn_policy;
 pub mod gemm;

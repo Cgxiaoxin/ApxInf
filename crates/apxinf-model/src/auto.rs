@@ -42,7 +42,7 @@ pub struct LoadOptions {
     /// `config.json:model_type`.
     pub model_name: Option<String>,
     /// Model-local compute implementation identifier. PI0.5 accepts
-    /// auto, bf16, fp8_static and int8_dynamic. Other families migrate separately.
+    /// auto, bf16, fp8_static, int8_dynamic and fp32 (explicit only). Other families migrate separately.
     pub model_variant: Option<String>,
     /// Legacy selection for model families not yet migrated to model_variant.
     pub precision: ModelPrecision,

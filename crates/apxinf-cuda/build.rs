@@ -361,6 +361,7 @@ fn main() {
                 std::path::Path::new(&adapters_dir).join("static_bf16_adapter.cu"),
                 std::path::Path::new(&adapters_dir).join("w8a8_adapter.cu"),
                 std::path::Path::new(&adapters_dir).join("custom_kernels.cu"),
+                std::path::Path::new(&adapters_dir).join("fp32_adapter.cu"),
                 std::path::Path::new(&adapters_dir).join("cublas_adapter.cu"),
                 std::path::Path::new(&adapters_dir).join("cublaslt_adapter.cu"),
             ];

@@ -12,6 +12,7 @@ mod custom;
 mod cutlass;
 mod driver;
 mod fa2;
+mod fp32;
 mod linear_attention;
 
 pub(crate) use cublas::*;
@@ -21,4 +22,5 @@ pub(crate) use custom::*;
 pub(crate) use cutlass::*;
 pub(crate) use driver::*;
 pub(crate) use fa2::*;
+pub(crate) use fp32::*;
 pub(crate) use linear_attention::*;

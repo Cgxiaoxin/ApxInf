@@ -1,5 +1,6 @@
 //! Checkpoint structure, model-specific device representations and fixed calibration assets.
 mod bf16;
+mod fp32;
 mod fp8_static;
 mod fp8_static_calibration;
 mod host;
@@ -7,6 +8,7 @@ mod host;
 mod int8_dynamic;
 mod packing;
 pub use bf16::*;
+pub use fp32::*;
 pub use fp8_static::*;
 pub use fp8_static_calibration::*;
 pub use host::*;

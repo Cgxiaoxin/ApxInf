@@ -122,6 +122,14 @@ pub(super) fn load_model_runner(
                 time_embeddings,
             }
         }
+        ModelVariantChoice::Fp32 => {
+            let weights = Arc::new(Fp32Weights::from_host(&host_weights, &*backend)?);
+            let time_embeddings = Arc::new(upload_time_embeddings_fp32(&config, &*backend)?);
+            ModelVariant::Fp32 {
+                model: build_fp32_model(Arc::clone(&backend), Arc::clone(&config), weights)?,
+                time_embeddings,
+            }
+        }
         ModelVariantChoice::Auto => unreachable!("automatic precision was resolved"),
     };
 

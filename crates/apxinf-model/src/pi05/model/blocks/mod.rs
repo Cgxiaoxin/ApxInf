@@ -3,11 +3,14 @@
 //! capture graphs, cache requests, or run the complete model schedule.
 
 pub(super) mod bf16;
+pub(super) mod fp32;
 pub(super) mod fp8_static;
 pub(super) mod int8_dynamic;
 
 pub(super) use bf16::backbone::Bf16Blocks;
 pub use bf16::backbone::Bf16PrefixKvCache;
+pub(super) use fp32::backbone::Fp32Blocks;
+pub use fp32::backbone::Fp32PrefixKvCache;
 pub(super) use fp8_static::backbone::Fp8StaticBlocks;
 pub use fp8_static::backbone::Fp8StaticPrefixKvCache;
 pub(super) use int8_dynamic::backbone::Int8DynamicBlocks;

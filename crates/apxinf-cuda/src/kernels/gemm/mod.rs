@@ -451,6 +451,63 @@ pub fn matmul(ctx: &CudaContext, activation: &Tensor, weight: &Tensor) -> Result
     Ok(output.into_tensor(output_shape, activation.dtype()))
 }
 
+/// Native-FP32 row-major `A[M,K] @ B[K,N]` via cuBLAS `Sgemm`.
+///
+/// Fail-closed: both operands must be 2D `DType::F32` tensors on the context
+/// device with matching inner dimension; there is no dtype conversion. The
+/// output comes from the bound workspace so the call is graph-capturable.
+pub fn f32(ctx: &CudaContext, activation: &Tensor, weight: &Tensor) -> Result<Tensor> {
+    for (name, tensor) in [("activation", activation), ("weight", weight)] {
+        if tensor.dtype() != DType::F32 {
+            return Err(Error::DTypeMismatch {
+                expected: DType::F32,
+                got: tensor.dtype(),
+            });
+        }
+        if tensor.device() != Device::Cuda(ctx.device_id()) {
+            return Err(Error::DeviceMismatch {
+                expected: Device::Cuda(ctx.device_id()),
+                got: tensor.device(),
+            });
+        }
+        if tensor.shape().dims().len() != 2 || tensor.shape().dims().contains(&0) {
+            return Err(Error::Other(format!(
+                "FP32 GEMM {name} must be a non-empty 2D tensor, got {:?}",
+                tensor.shape().dims()
+            )));
+        }
+    }
+    let (m, k) = (activation.shape().dims()[0], activation.shape().dims()[1]);
+    let (weight_k, n) = (weight.shape().dims()[0], weight.shape().dims()[1]);
+    if k != weight_k {
+        return Err(Error::Other(format!(
+            "FP32 GEMM inner dimension mismatch: activation {:?}, weight {:?}",
+            activation.shape().dims(),
+            weight.shape().dims()
+        )));
+    }
+    let output = crate::workspace::output_buffer(
+        ctx,
+        checked_bytes(DType::F32, &[m, n], "FP32 GEMM output")?,
+    )?;
+    let activation_buffer = CudaBuffer::from_tensor(activation).map_err(Error::Cuda)?;
+    let weight_buffer = CudaBuffer::from_tensor(weight).map_err(Error::Cuda)?;
+    ctx.cublas()
+        .gemm(
+            DType::F32,
+            m,
+            n,
+            k,
+            1.0,
+            &activation_buffer,
+            &weight_buffer,
+            0.0,
+            &output,
+        )
+        .map_err(Error::Cuda)?;
+    Ok(output.into_tensor(apxinf_core::Shape::new(vec![m, n]), DType::F32))
+}
+
 /// Row-major `A[M,K] @ B[K,N]` into caller-owned storage.
 #[allow(clippy::too_many_arguments)]
 pub fn write(

@@ -11,8 +11,8 @@ mod calibration;
 mod model;
 pub use calibration::Pi05CalibrationObserver;
 pub use model::{
-    build_bf16_model, build_fp8_static_model, build_int8_dynamic_model,
-    upload_time_embeddings_bf16, upload_time_embeddings_fp8_static,
+    build_bf16_model, build_fp32_model, build_fp8_static_model, build_int8_dynamic_model,
+    upload_time_embeddings_bf16, upload_time_embeddings_fp32, upload_time_embeddings_fp8_static,
     upload_time_embeddings_int8_dynamic,
 };
 pub(super) use model::{ModelOperation, ModelVariant};
@@ -58,6 +58,10 @@ pub use blocks::bf16::{
     action_layer_bf16, language_layer_bf16, vision_layer_bf16, vision_patch_embed_bf16,
     Bf16ActionLayerOutput, Bf16LanguageLayerOutput,
 };
+pub use blocks::fp32::{
+    action_layer_fp32, language_layer_fp32, vision_layer_fp32, vision_patch_embed_fp32,
+    Fp32ActionLayerOutput, Fp32LanguageLayerOutput,
+};
 pub use blocks::fp8_static::{
     action_layer_fp8_static, language_layer_fp8_static, vision_layer_fp8_static,
     vision_patch_embed_fp8_static, vision_patch_embed_fp8_static_native,
@@ -67,8 +71,11 @@ pub use blocks::int8_dynamic::{
     action_layer_int8_dynamic, language_layer_int8_dynamic, vision_layer_int8_dynamic,
     vision_patch_embed_int8_dynamic, Int8DynamicActionLayerOutput, Int8DynamicLanguageLayerOutput,
 };
-pub use blocks::{Bf16PrefixKvCache, Fp8StaticPrefixKvCache, Int8DynamicPrefixKvCache};
+pub use blocks::{
+    Bf16PrefixKvCache, Fp32PrefixKvCache, Fp8StaticPrefixKvCache, Int8DynamicPrefixKvCache,
+};
 pub type Bf16Model = std::sync::Arc<Pi05Model<blocks::Bf16Blocks>>;
+pub type Fp32Model = std::sync::Arc<Pi05Model<blocks::Fp32Blocks>>;
 pub type Fp8StaticModel = std::sync::Arc<Pi05Model<blocks::Fp8StaticBlocks>>;
 pub type Int8DynamicModel = std::sync::Arc<Pi05Model<blocks::Int8DynamicBlocks>>;
 
