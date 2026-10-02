@@ -31,19 +31,19 @@ Artifact: `devlocal/pi05-rtx5090/logs/fp32/latency_compare/`
 
 | Path | P50 |
 |---|---:|
-| APXInf **fp32** (path-B smoke) | **91.29 ms** |
+| APXInf **fp32** (reference MQA) | **91.29 ms** |
+| APXInf **fp32** (cuBLAS MQA, exact FP32 compute) | **66.83 ms** |
 | APXInf bf16 PreferGraph (prior) | ~27.33 ms |
 | OpenPI JAX (prior) | ~61.24 ms |
 
-FP32 is the correctness / reference executor, not the deploy latency path yet.
-An experimental TF32 + cuBLAS-MQA cut (~66 ms) **failed soft gold gates** and was
-reverted; keep the reference attention kernel until a layout-correct vendor MQA
-is proven against the gold ladder.
+Root cause of the earlier gold failure was an **in-place softmax race** in the
+cuBLAS F32 MQA path (`softmax_f32_kernel` multi-block with `input==output`).
+Fixed with a one-warp-per-row `softmax_scalar_f32_kernel`. Operator parity and
+e2e gold both pass; TF32 remains off by default.
 
 ## Next
 
 - PreferGraph capture for FP32 (workspace may need a larger arena)
-- Prove a layout-correct cuBLAS/cuBLASLt F32 MQA (vendor path regressed gold)
-- Optional TF32 as an explicit opt-in (must not be default until gold re-passes)
+- Optional TF32 as an explicit opt-in (must re-pass gold before defaulting)
 - Keep BF16 as the 5090 ship path until FP32 is competitive where needed
 - See `doc/pi05-sft-fp32-deploy.md` for SFT checkpoint usage

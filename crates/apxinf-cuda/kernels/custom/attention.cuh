@@ -900,6 +900,41 @@ __global__ void softmax_scalar_bf16_kernel(
   }
 }
 
+// FP32 sibling of softmax_scalar_bf16_kernel for cuBLAS F32 MQA. One warp per
+// row keeps the in-place update race-free (unlike softmax_f32_kernel's
+// multi-block launch when input == output).
+__global__ void softmax_scalar_f32_kernel(float* data, int rows, int cols) {
+  int lane = threadIdx.x;
+  int row = blockIdx.x;
+  if (row >= rows) return;
+  float* source = data + static_cast<int64_t>(row) * cols;
+  float values[kSoftmaxIterations];
+  float maximum = -1.0e30f;
+#pragma unroll
+  for (int iteration = 0; iteration < kSoftmaxIterations; ++iteration) {
+    int col = iteration * 32 + lane;
+    float value = col < cols ? source[col] : -1.0e30f;
+    values[iteration] = value;
+    maximum = fmaxf(maximum, value);
+  }
+  maximum = warp_max(maximum);
+  float sum = 0.0f;
+#pragma unroll
+  for (int iteration = 0; iteration < kSoftmaxIterations; ++iteration) {
+    values[iteration] = __expf(values[iteration] - maximum);
+    sum += values[iteration];
+  }
+  sum = warp_sum_all(sum);
+  float inverse = 1.0f / sum;
+#pragma unroll
+  for (int iteration = 0; iteration < kSoftmaxIterations; ++iteration) {
+    int col = iteration * 32 + lane;
+    if (col < cols) {
+      source[col] = values[iteration] * inverse;
+    }
+  }
+}
+
 // Batch-1 MQA flash kernel for static inference's one-KV-head Gemma experts. Scores
 // remain in shared memory; only the final [suffix, heads, dim] tensor is
 // written to global memory.

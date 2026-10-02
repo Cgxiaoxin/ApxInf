@@ -747,6 +747,9 @@ pub fn split_qkv_bias_f32(
 /// Non-causal multi-query attention in FP32. `q` is `[queries, heads, head_dim]`;
 /// `k`/`v` hold at least `key_tokens` rows of `head_dim` (a pre-sized cache is
 /// fine; only the first `key_tokens` rows are read). Scale is `1/sqrt(head_dim)`.
+///
+/// Prefers the cuBLAS F32 MQA path (exact `CUBLAS_COMPUTE_32F`); falls back to
+/// the reference kernel when vendor MQA rejects the shape.
 pub fn mqa_f32(
     ctx: &CudaContext,
     q: &Tensor,
@@ -767,6 +770,22 @@ pub fn mqa_f32(
         return Err(Error::Other("FP32 MQA shape mismatch".into()));
     }
     let output = f32_buffer(ctx, q_shape, "MQA")?;
+    let cublas_status = unsafe {
+        ffi::apxinf_static_cublas_mqa_f32(
+            gpu_ptr(q)?,
+            gpu_ptr(k)?,
+            gpu_ptr(v)?,
+            output.ptr(),
+            dim_i32(q_shape[0], "query tokens")?,
+            dim_i32(key_tokens, "key tokens")?,
+            dim_i32(q_shape[1], "heads")?,
+            dim_i32(q_shape[2], "head dim")?,
+            ctx.stream().handle(),
+        )
+    };
+    if cublas_status == 0 {
+        return Ok(f32_tensor(output, q_shape.to_vec()));
+    }
     check_cuda(unsafe {
         ffi::apxinf_fp32_mqa(
             gpu_ptr(q)?,

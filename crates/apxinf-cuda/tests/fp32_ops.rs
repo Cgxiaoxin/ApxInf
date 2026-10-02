@@ -276,6 +276,37 @@ fn rope_and_attention_match_cpu() {
     }
     close(&down(&ctx, &mqa), &e, 1e-5, "mqa");
 
+    // Larger MQA shape closer to π0.5 language/action (head_dim=256, many keys).
+    // Exercises the cuBLAS F32 MQA path (key_tokens fits kSoftmaxMaxCols=1024).
+    let (q2, h2, d2, k2) = (4usize, 8usize, 256usize, 512usize);
+    let q_big = pattern(q2 * h2 * d2, 21);
+    let k_big = pattern(k2 * d2, 22);
+    let v_big = pattern(k2 * d2, 23);
+    let mqa_big = fp32::mqa_f32(
+        &ctx,
+        &up(vec![q2, h2, d2], &q_big),
+        &up(vec![k2, d2], &k_big),
+        &up(vec![k2, d2], &v_big),
+        k2,
+    )
+    .unwrap();
+    let mut e_big = Vec::with_capacity(q2 * h2 * d2);
+    for t in 0..q2 {
+        for h in 0..h2 {
+            let qv = &q_big[(t * h2 + h) * d2..][..d2];
+            let scores: Vec<f32> = (0..k2)
+                .map(|j| (0..d2).map(|d| qv[d] * k_big[j * d2 + d]).sum::<f32>() / (d2 as f32).sqrt())
+                .collect();
+            let m = scores.iter().cloned().fold(f32::MIN, f32::max);
+            let ex: Vec<f32> = scores.iter().map(|s| (s - m).exp()).collect();
+            let z: f32 = ex.iter().sum();
+            for d in 0..d2 {
+                e_big.push((0..k2).map(|j| ex[j] / z * v_big[j * d2 + d]).sum());
+            }
+        }
+    }
+    close(&down(&ctx, &mqa_big), &e_big, 2e-4, "mqa_cublas_shape");
+
     // MHA with two batches of 4 tokens.
     let (heads, per_batch, batches) = (2usize, 4usize, 2usize);
     let n = per_batch * batches * heads * hd;

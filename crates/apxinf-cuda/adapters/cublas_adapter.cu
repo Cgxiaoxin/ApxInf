@@ -110,9 +110,10 @@ extern "C" int apxinf_static_cublas_mqa_f32(
       CUBLAS_COMPUTE_32F, CUBLAS_GEMM_DEFAULT);
   if (status != CUBLAS_STATUS_SUCCESS) return static_cast<int>(status);
 
-  dim3 block(256);
-  dim3 grid((key_tokens + block.x - 1) / block.x, rows);
-  softmax_f32_kernel<<<grid, block, 0, stream>>>(logits, logits, key_tokens, rows);
+  // One warp per score-row keeps the in-place softmax race-free. The generic
+  // softmax_f32_kernel launches multiple blocks per row and is unsafe when
+  // input == output.
+  softmax_scalar_f32_kernel<<<rows, 32, 0, stream>>>(logits, rows, key_tokens);
   if (cudaPeekAtLastError() != cudaSuccess) {
     return static_cast<int>(CUBLAS_STATUS_EXECUTION_FAILED);
   }
