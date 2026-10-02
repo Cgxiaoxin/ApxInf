@@ -83,16 +83,21 @@ python /mnt/sdb/cgq/projects/APXinf-robo/devlocal/pi05-rtx5090/scripts/compare_o
   --out-dir /tmp/fp32_sft_latency
 ```
 
-**5090 reference numbers (pi05_droid, not your SFT):**
+**5090 reference numbers (`pi05_droid_pytorch`, not tianji SFT):**
 
-| Variant | P50 infer |
-|---|---:|
-| BF16 PreferGraph | ~27 ms |
-| FP32 (eager / TF32 path) | was ~91 ms before TF32+cuBLAS MQA; rebench after rebuild |
-| OpenPI JAX | ~61 ms |
+| Variant | P50 infer | Gold vs OpenPI host-f32 |
+|---|---:|---|
+| BF16 PreferGraph | ~27 ms | PASS (ship latency path) |
+| FP32 + cuBLAS F32 MQA (exact `CUBLAS_COMPUTE_32F`, TF32 **off**) | ~66.8 ms | PASS (`max_abs≈0.008`) |
+| FP32 reference MQA (pre-accel) | ~91 ms | PASS |
+| OpenPI JAX | ~61 ms | — |
 
-Use **BF16** for deploy speed; use **FP32** when you need the APXInf FP32
-executor as a stronger numeric baseline against your SFT.
+cuBLAS F32 MQA was only re-enabled after operator parity + e2e gold. TF32 remains
+opt-in and **not** the default / ship path. Prefer **BF16** for deploy latency;
+use **FP32** when you need the FP32 executor as a stronger numeric baseline.
+
+**SFT note:** `weight/21000` (tianji) is deferred until its train config is available.
+Pipeline smoke uses public configs (`pi05_droid` / `pi05_libero`), not that drop.
 
 ## 2. LIBERO (separate env — do not mix with `apxinf-5090`)
 

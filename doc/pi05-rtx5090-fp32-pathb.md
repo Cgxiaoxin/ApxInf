@@ -14,12 +14,19 @@ for this smoke; default PreferGraph may fall back to eager.
 
 Artifact: `devlocal/pi05-rtx5090/logs/fp32/gold_ladder_pathb/`
 
-| Variant | max_abs | cosine | rel_l2 | soft pass |
-|---|---:|---:|---:|:---:|
-| bf16 | 0.012084 | 0.999957 | 0.010197 | ✓ |
-| **fp32** | **0.007993** | **0.999976** | **0.007173** | ✓ |
+| Variant | max_abs | cosine | rel_l2 | soft pass | Artifact |
+|---|---:|---:|---:|:---:|---|
+| bf16 PreferGraph | 0.012084 | 0.999957 | 0.010197 | ✓ | `gold_ladder_cublas_mqa_fixed` |
+| **fp32** reference MQA (pre-accel) | **0.007993** | **0.999976** | **0.007173** | ✓ | `gold_ladder_ref_mqa` |
+| **fp32** cuBLAS F32 MQA (post-fix) | **0.007994** | **0.999976** | **0.007173** | ✓ | `gold_ladder_cublas_mqa_fixed` |
+| fp32 cuBLAS MQA before softmax fix | 0.462445 | 0.917954 | 0.399502 | ✗ | `gold_ladder_exact_mqa` |
+| fp32 + TF32 (opt-in, not default) | 0.175326 | 0.990674 | 0.138685 | ✗ | `gold_ladder_tf32` |
 
 Soft gates: max_abs≤0.05, cosine≥0.99, rel_l2≤0.1.
+
+Takeaway: after the softmax race fix, cuBLAS F32 MQA matches reference-MQA FP32
+gold to ~1e-6 on max_abs; both beat BF16 on max_abs (~0.008 vs ~0.012) while
+staying well inside soft gates.
 
 Note: OpenPI `pi05_droid` **compute** dtype remains bfloat16; float32 is the
 stored gold / comparison width. FP32 APXInf is an APXInf-side executor, not a
