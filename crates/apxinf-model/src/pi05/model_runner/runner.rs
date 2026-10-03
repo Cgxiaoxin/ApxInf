@@ -286,6 +286,28 @@ fn select_graph<G>(
     }
 }
 
+/// Override the default PreferGraph prepare path for PI0.5 benches / bring-up.
+///
+/// `APXINF_PI05_EXECUTION_POLICY=eager|prefer_graph|require_graph` (case
+/// insensitive). Unset or unknown values keep PreferGraph. RequireGraph fails
+/// closed when capture is impossible (no silent eager fallback).
+fn default_pi05_execution_policy() -> ExecutionPolicy {
+    match std::env::var("APXINF_PI05_EXECUTION_POLICY") {
+        Ok(value) => match value.trim().to_ascii_lowercase().as_str() {
+            "eager" => ExecutionPolicy::Eager,
+            "require_graph" | "require-graph" | "graph" => ExecutionPolicy::RequireGraph,
+            "prefer_graph" | "prefer-graph" | "" => ExecutionPolicy::PreferGraph,
+            other => {
+                eprintln!(
+                    "[apxinf] unknown APXINF_PI05_EXECUTION_POLICY={other:?}; using PreferGraph"
+                );
+                ExecutionPolicy::PreferGraph
+            }
+        },
+        Err(_) => ExecutionPolicy::PreferGraph,
+    }
+}
+
 fn cached_or_build<K, V>(
     cache: &mut Option<(K, Rc<V>)>,
     key: K,
@@ -418,7 +440,13 @@ impl Pi05ModelRunner {
             eprintln!("[apxinf] PI0.5 graph capture unavailable, using eager: {reason}");
         }
         let strategy = match graph {
-            Some(graph) => ExecStrategy::Graph(graph),
+            Some(graph) => {
+                eprintln!(
+                    "[apxinf] PI0.5 prepared mode=graph (policy={policy:?}, variant={})",
+                    self.model.name()
+                );
+                ExecStrategy::Graph(graph)
+            }
             None => {
                 let raw_images = if raw_rgb {
                     Some(
@@ -432,6 +460,12 @@ impl Pi05ModelRunner {
                 // eager: FP8 fused fallthroughs inflate peak beyond the static
                 // ledger (grow-on-exhaust does not converge without reuse).
                 // Workspace-free eager reallocates and remains correct.
+                if policy == ExecutionPolicy::Eager {
+                    eprintln!(
+                        "[apxinf] PI0.5 prepared mode=eager (policy=Eager, variant={})",
+                        self.model.name()
+                    );
+                }
                 ExecStrategy::Eager(EagerInputs {
                     patches,
                     raw_images,
@@ -509,14 +543,14 @@ impl VlaRuntime for Pi05ModelRunner {
                 drop(cache.take());
             }
             cached_or_build(&mut cache, spec, || {
-                self.build_prepared(&spec, ExecutionPolicy::PreferGraph)
+                self.build_prepared(&spec, default_pi05_execution_policy())
             })?
         };
         prepared.run(request)
     }
 
     fn prepare(&self, spec: &InferenceSpec) -> Result<Box<dyn PreparedInference>> {
-        self.prepare_with_policy(spec, ExecutionPolicy::PreferGraph)
+        self.prepare_with_policy(spec, default_pi05_execution_policy())
     }
 
     fn prepare_with_policy(

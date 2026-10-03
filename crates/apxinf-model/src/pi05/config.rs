@@ -426,10 +426,14 @@ impl Pi05Config {
     /// Conservative arena reservation for the native-FP32 graph.
     ///
     /// Every FP32 intermediate is four bytes against the BF16 schedule's two,
-    /// so doubling the BF16 bound covers the same stable-address arena.
+    /// so doubling the BF16 bound covers the same stable-address arena. PreferGraph
+    /// capture also stages cuBLAS F32 MQA logits outside the bump arena; leave an
+    /// extra 25% headroom so grow-on-exhaust is less likely on 3-view / long-token
+    /// shapes when the schedule is denser than the FP8-derived ledger.
     pub fn cuda_graph_workspace_bytes_fp32(&self, token_count: usize) -> Result<usize> {
-        self.cuda_graph_workspace_bytes_bf16(token_count)?
-            .checked_mul(2)
+        let base = self.cuda_graph_workspace_bytes_bf16(token_count)?;
+        base.checked_mul(2)
+            .and_then(|bytes| bytes.checked_add(bytes / 4))
             .ok_or_else(|| Error::Other("pi05 FP32 CUDA workspace exceeds address space".into()))
     }
 

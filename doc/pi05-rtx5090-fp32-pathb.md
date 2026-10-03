@@ -1,14 +1,16 @@
 # PI0.5 RTX 5090 — FP32 path B (executor)
 
-Date: 2026-10-02  
+Date: 2026-10-03  
 GPU: NVIDIA GeForce RTX 5090 (sm_120)  
 Checkpoint: `pi05_droid_pytorch`
 
 ## Scope
 
-Explicit `model_variant=fp32` eager reference executor (cuBLAS F32 GEMM + FP32
-ops). `Auto` never selects FP32. PreferGraph/tactics for FP32 are not required
-for this smoke; default PreferGraph may fall back to eager.
+Explicit `model_variant=fp32` executor (cuBLAS F32 GEMM + FP32 ops + gold-safe
+cuBLAS F32 MQA). `Auto` never selects FP32. Default prepare policy is PreferGraph;
+override with `APXINF_PI05_EXECUTION_POLICY=eager|prefer_graph|require_graph`.
+FP32 graph workspace is `2.5×` the BF16 arena bound (+25% headroom for MQA
+staging outside the bump arena).
 
 ## Gold ladder (host float32 OpenPI gold, seed 7)
 
@@ -48,9 +50,30 @@ cuBLAS F32 MQA path (`softmax_f32_kernel` multi-block with `input==output`).
 Fixed with a one-warp-per-row `softmax_scalar_f32_kernel`. Operator parity and
 e2e gold both pass; TF32 remains off by default.
 
+## Execution policy (FP32 PreferGraph)
+
+Date: 2026-10-03 · GPU7 · warm `CARGO_TARGET_DIR` maturin develop  
+Artifact: `devlocal/pi05-rtx5090/logs/fp32/19_fp32_execution_policy_bench.log`  
+JSON: `devlocal/pi05-rtx5090/logs/fp32/fp32_execution_policy_bench.json`  
+Script: `devlocal/pi05-rtx5090/scripts/bench_fp32_execution_policy.py`
+
+| `APXINF_PI05_EXECUTION_POLICY` | `execution_mode` | P50 |
+|---|---|---:|
+| `eager` | `eager` | **84.80 ms** |
+| `prefer_graph` (default) | `graph` | **65.95 ms** |
+| `require_graph` | `graph` | **66.15 ms** |
+
+Takeaway: FP32 PreferGraph **captures** (no eager fallback). RequireGraph also
+stays on graph. Graph vs eager is ~**1.29×** (85→66 ms) on this DROID 2-view /
+10-step shape; PreferGraph P50 matches the earlier cuBLAS-MQA latency row
+(~66.8 ms). BF16 PreferGraph (~27 ms) remains the 5090 ship latency path;
+FP32 PreferGraph is the gold-tighter path when needed.
+
+Python observability: `ModelRunner.execution_mode` returns `graph` / `eager` /
+`unprepared` / `invalidated` / `runtime-managed` after prepare/infer.
+
 ## Next
 
-- PreferGraph capture for FP32 (workspace may need a larger arena)
 - Optional TF32 as an explicit opt-in (must re-pass gold before defaulting)
 - Keep BF16 as the 5090 ship path until FP32 is competitive where needed
 - See `doc/pi05-sft-fp32-deploy.md` for SFT checkpoint usage

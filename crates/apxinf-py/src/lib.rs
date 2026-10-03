@@ -1649,6 +1649,13 @@ impl ModelRunner {
         Ok(self.model.vla().map_err(runtime_err)?.model_variant())
     }
 
+    /// Current plan mode after the first prepare/infer: `graph`, `eager`,
+    /// `unprepared`, `invalidated`, or `runtime-managed`.
+    #[getter]
+    fn execution_mode(&self) -> PyResult<&'static str> {
+        Ok(self.model.vla().map_err(runtime_err)?.execution_mode())
+    }
+
     #[getter]
     fn action_dim(&self) -> usize {
         self.action_shape()[1]
